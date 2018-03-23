@@ -1,0 +1,30 @@
+{
+  "name": "blcksheepio/http-message",
+  "description": "PSR-7 compliant HTTP messaging",
+  "type": "project",
+  "require": {
+    "psr/http-message": "^1.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "^2.4",
+    "codeception/mockery-module": "^0.2.3",
+    "fzaninotto/faker": "^1.7"
+  },
+  "authors": [
+    {
+      "name": "Jason Lamb",
+      "email": "baaa@iamalamb.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "BlcksheepIO\\Http\\Message\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  }
+}
