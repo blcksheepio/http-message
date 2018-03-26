@@ -10,6 +10,24 @@ use Psr\Http\Message\UriInterface;
  */
 class Uri implements UriInterface
 {
+
+    /**
+     * Sub-delimiter characters used
+     * in query strings, user info
+     * and string fragments.
+     *
+     * @const string CHAR_SUB_DELIMS
+     */
+    const CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
+
+    /**
+     * Unreserved characters used in user info, paths,
+     * query strings, and fragments.
+     *
+     * @const string CHAR_UNRESERVED
+     */
+    const CHAR_UNRESERVED = 'a-zA-Z0-9_\-\.~\pL';
+
     /**
      * Simple work-around for local/generic URIs.
      *
@@ -35,6 +53,12 @@ class Uri implements UriInterface
         'https' => 443,
     ];
 
+    /**
+     * Represents the valid
+     * host portion of a Uri.
+     *
+     * @var string $host
+     */
     protected $host = '';
 
     /**
@@ -44,6 +68,14 @@ class Uri implements UriInterface
      * @var string $scheme
      */
     protected $scheme = '';
+
+    /**
+     * The username/password
+     * portion of the Uri.
+     *
+     * @var string $userInfo
+     */
+    protected $userInfo = '';
 
     /**
      * Retrieve the scheme component of the URI.
@@ -104,7 +136,7 @@ class Uri implements UriInterface
      */
     public function getUserInfo()
     {
-        // TODO: Implement getUserInfo() method.
+        return $this->userInfo;
     }
 
     /**
@@ -247,7 +279,7 @@ class Uri implements UriInterface
         }
 
         // Attempt to filter out the scheme used
-        $scheme = $this->filterValidSchemes($scheme);
+        $scheme = $this->filterScheme($scheme);
 
         // If the passed scheme is the same as the current scheme, return.. no changes made
         if ($scheme === $this->scheme) {
@@ -277,7 +309,44 @@ class Uri implements UriInterface
      */
     public function withUserInfo($user, $password = null)
     {
-        // TODO: Implement withUserInfo() method.
+        // First, check to see that the $user parameter is a valid string.
+        // If it is not, throw an exception.
+        if (is_string($user) !== true) {
+            throw new InvalidArgumentException(sprintf(
+                    '%s expects a string argument; received %s',
+                    __METHOD__,
+                    (is_object($user)) ? get_class($user) : gettype($user))
+            );
+        }
+
+        // Check to see that the $password parameter is a valid string.
+        // If it is not, throw an exception.
+        if (($password !== null) && (is_string($password) === false)) {
+            throw new InvalidArgumentException(sprintf(
+                    '%s expects a string argument; received %s',
+                    __METHOD__,
+                    (is_object($password)) ? get_class($password) : gettype($password))
+            );
+        }
+
+        // Filter out and calculate the new userInfo
+        $userInfo = $this->filterUserInfoPart($user);
+        if ($password) {
+            $userInfo .= ':' . $this->filterUserInfoPart($password);
+        }
+
+        // If the userInfo is identical to the existing userInfo,
+        // simply return the current instance
+        if ($userInfo === $this->userInfo) {
+            return $this;
+        }
+
+        // The userInfo parts are NOT identical
+        // Therefore clone and return the new instance
+        $clone = clone $this;
+        $clone->userInfo = $userInfo;
+
+        return $clone;
     }
 
     /**
@@ -451,7 +520,7 @@ class Uri implements UriInterface
      * @param string $scheme
      * @return string|UriInterface
      */
-    private function filterValidSchemes($scheme)
+    private function filterScheme($scheme)
     {
         // First convert the $scheme to lower-case and strip out additional characters (://)
         $scheme = strtolower($scheme);
@@ -474,5 +543,33 @@ class Uri implements UriInterface
         }
 
         return $scheme;
+    }
+
+    /**
+     * Filters a part of user info in a URI to ensure it is properly encoded.
+     *
+     * @param string $part
+     * @return string
+     */
+    private function filterUserInfoPart($part)
+    {
+        // Note the addition of `%` to initial charset; this allows `|` portion
+        // to match and thus prevent double-encoding.
+        return preg_replace_callback(
+            '/(?:[^%' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . ']+|%(?![A-Fa-f0-9]{2}))/u',
+            [$this, 'urlEncodeChar'],
+            $part
+        );
+    }
+
+    /**
+     * URL encode a character returned by a regex.
+     *
+     * @param array $matches
+     * @return string
+     */
+    private function urlEncodeChar(array $matches)
+    {
+        return rawurlencode($matches[0]);
     }
 }

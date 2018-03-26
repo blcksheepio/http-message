@@ -3,6 +3,7 @@ namespace Tests\Unit;
 
 use BlcksheepIO\Http\Message\Uri;
 use Codeception\Example;
+use Faker\Factory;
 use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use stdClass;
@@ -19,6 +20,11 @@ use Tests\UnitTester;
 class UriCest
 {
     /**
+     * @var Factory
+     */
+    protected $faker;
+
+    /**
      * The UriInterface instance
      * currently under test.
      *
@@ -31,6 +37,7 @@ class UriCest
      */
     public function _before(UnitTester $I)
     {
+        $this->faker = Factory::create();
         $this->uri = new Uri();
     }
 
@@ -62,7 +69,7 @@ class UriCest
      *
      * @param UnitTester $I
      * @param Example $example
-     * @dataprovider schemeInvalidTypeDataProvider
+     * @dataprovider invalidPHPDataTypeDataProvider
      * @group psr
      * @group psr_7
      * @group uri
@@ -196,6 +203,126 @@ class UriCest
     }
 
     /**
+     * Test to ensure that userInfo $user portion
+     * accepts only type string.
+     *
+     * @param UnitTester $I
+     * @param Example $example
+     * @dataprovider invalidPHPDataTypeDataProvider
+     * @group psr
+     * @group psr_7
+     * @group uri
+     */
+    public function tryToTestUriWithUserInfoThrowsExceptionIfTypeStringIsNotPassedForUser(
+        UnitTester $I,
+        Example $example
+    ) {
+        $method = Uri::class . '::withUserInfo';
+        $message = $method . ' expects a string argument; received ' . $example['type'];
+        $I->expectException(
+            new InvalidArgumentException($message),
+            function () use ($example) {
+                $this->uri->withUserInfo($example['data']);
+            }
+        );
+    }
+
+    /**
+     * Test to ensure that userInfo $user portion
+     * accepts only type string.
+     *
+     * @param UnitTester $I
+     * @param Example $example
+     * @dataprovider invalidPHPDataTypeDataProvider
+     * @group psr
+     * @group psr_7
+     * @group uri
+     */
+    public function tryToTestUriWithUserInfoThrowsExceptionIfTypeStringIsNotPassedForPassword(
+        UnitTester $I,
+        Example $example
+    ) {
+        $method = Uri::class . '::withUserInfo';
+        $message = $method . ' expects a string argument; received ' . $example['type'];
+        $I->expectException(
+            new InvalidArgumentException($message),
+            function () use ($example) {
+                $this->uri->withUserInfo($example['data'], $example['data']);
+            }
+        );
+    }
+
+    /**
+     * Test to ensure that withUserInfo part does not accidentally
+     * add the password.
+     *
+     * @param UnitTester $I
+     * @group psr
+     * @group psr_7
+     * @group uri
+     */
+    public function tryToTestUriWithUserInfoDoesNotAddPasswordIfNotPresent(UnitTester $I)
+    {
+        $userInfoPart = $this->uri->withUserInfo('jlamb')->getUserInfo();
+        $I->assertEquals('jlamb', $userInfoPart);
+    }
+
+    /**
+     * Test to ensure that withUserInfo part does
+     * add the password if it is present and valid.
+     *
+     * @param UnitTester $I
+     * @group psr
+     * @group psr_7
+     * @group uri
+     */
+    public function tryToTestUriWithUserInfoDoesAddPasswordIfPresent(UnitTester $I)
+    {
+        $userInfoPart = $this->uri->withUserInfo('jlamb', 'password')->getUserInfo();
+        $I->assertEquals('jlamb:password', $userInfoPart);
+    }
+
+    /**
+     * Test to ensure that withUserInfo part honors the immutability
+     * of the Uri by returning the same instance if the userInfo parts
+     * are identical.
+     *
+     * @param UnitTester $I
+     * @group psr
+     * @group psr_7
+     * @group uri
+     */
+    public function tryToTestUriWithUserInfoReturnsSameInstanceIfPassedSameUserInfo(UnitTester $I)
+    {
+        $uri = $this->uri->withUserInfo('');
+        $I->assertSame($uri, $this->uri);
+        $I->assertInstanceOf(Uri::class, $uri);
+        $I->assertInstanceOf(UriInterface::class, $uri);
+        $uri = $this->uri->withUserInfo('jason:lamb');
+        $I->assertSame($uri, $uri->withUserInfo('jason:lamb'));
+        $I->assertInstanceOf(Uri::class, $uri);
+        $I->assertInstanceOf(UriInterface::class, $uri);
+    }
+
+    /**
+     * Test to ensure that withUserInfo part honors the immutability
+     * of the Uri by returning the same instance if the userInfo parts
+     * are not identical.
+     *
+     * @param UnitTester $I
+     * @group psr
+     * @group psr_7
+     * @group uri
+     */
+    public function tryToTestUriWithUserInfoReturnsNewInstanceIfPassedDifferentUserInfo(UnitTester $I)
+    {
+        $uri = $this->uri->withUserInfo('jason', 'lamb');
+        $I->assertNotSame($uri, $this->uri);
+        $I->assertInstanceOf(Uri::class, $uri);
+        $I->assertInstanceOf(UriInterface::class, $uri);
+    }
+
+    /**
      * DataProvider used to test the UriInterface
      * with scheme will honor the requirement that
      * the scheme passed will validate regardless
@@ -221,13 +348,13 @@ class UriCest
     }
 
     /**
-     * DataProvider used to ensure that the withSchemeMethod
+     * DataProvider used to ensure that functions
      * will correctly throw an exception if an invalid
      * PHP data-type is passed.
      *
      * @return array
      */
-    protected function schemeInvalidTypeDataProvider()
+    protected function invalidPHPDataTypeDataProvider()
     {
         return [
             ['data' => 1234, 'type' => 'integer'],
