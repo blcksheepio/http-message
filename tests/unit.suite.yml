@@ -3,3 +3,4 @@ actor: UnitTester
 modules:
     enabled:
         - \Tests\Helper\Unit
+        - Asserts
