@@ -1,5 +1,0 @@
-suite_namespace: Tests\Functional
-actor: FunctionalTester
-modules:
-    enabled:
-        - \Tests\Helper\Functional
