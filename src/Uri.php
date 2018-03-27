@@ -62,6 +62,14 @@ class Uri implements UriInterface
     protected $host = '';
 
     /**
+     * The port number used
+     * in the Uri instance.
+     *
+     * @var string $port
+     */
+    protected $port = '';
+
+    /**
      * The RFC compliant
      * scheme used;
      *
@@ -116,7 +124,23 @@ class Uri implements UriInterface
      */
     public function getAuthority()
     {
-        // TODO: Implement getAuthority() method.
+        if (empty($this->host)) {
+            return '';
+        }
+
+        // Check to see if we need to add the $userInfo portion
+        $authority = $this->host;
+        if (!empty($this->userInfo)) {
+            $authority = $this->userInfo . '@' . $this->host;
+        }
+
+        // Check to see if we used a non-standard port number
+        // If it IS a non-standard port add the port number
+        if (!$this->isNonStandardPort($this->scheme, $this->host, $this->port)) {
+            $authority .= ':' . $this->port;
+        }
+
+        return $authority;
     }
 
     /**
@@ -152,7 +176,7 @@ class Uri implements UriInterface
      */
     public function getHost()
     {
-        // TODO: Implement getHost() method.
+        return $this->host;
     }
 
     /**
@@ -270,13 +294,7 @@ class Uri implements UriInterface
     {
         // First, check to see that the $sceme parameter is a valid string.
         // If it is not, throw an exception.
-        if (is_string($scheme) !== true) {
-            throw new InvalidArgumentException(sprintf(
-                    '%s expects a string argument; received %s',
-                    __METHOD__,
-                    (is_object($scheme)) ? get_class($scheme) : gettype($scheme))
-            );
-        }
+        $this->isValidString(__METHOD__, $scheme);
 
         // Attempt to filter out the scheme used
         $scheme = $this->filterScheme($scheme);
@@ -311,28 +329,17 @@ class Uri implements UriInterface
     {
         // First, check to see that the $user parameter is a valid string.
         // If it is not, throw an exception.
-        if (is_string($user) !== true) {
-            throw new InvalidArgumentException(sprintf(
-                    '%s expects a string argument; received %s',
-                    __METHOD__,
-                    (is_object($user)) ? get_class($user) : gettype($user))
-            );
-        }
+        $this->isValidString(__METHOD__, $user);
 
-        // Check to see that the $password parameter is a valid string.
-        // If it is not, throw an exception.
-        if (($password !== null) && (is_string($password) === false)) {
-            throw new InvalidArgumentException(sprintf(
-                    '%s expects a string argument; received %s',
-                    __METHOD__,
-                    (is_object($password)) ? get_class($password) : gettype($password))
-            );
+        // Run the SAME test on the password too
+        if ($password !== null) {
+            $this->isValidString(__METHOD__, $password);
         }
 
         // Filter out and calculate the new userInfo
-        $userInfo = $this->filterUserInfoPart($user);
+        $userInfo = $this->filterUserInfo($user);
         if ($password) {
-            $userInfo .= ':' . $this->filterUserInfoPart($password);
+            $userInfo .= ':' . $this->filterUserInfo($password);
         }
 
         // If the userInfo is identical to the existing userInfo,
@@ -363,6 +370,9 @@ class Uri implements UriInterface
      */
     public function withHost($host)
     {
+        // Check to see that the host is a valid string
+        $this->isValidString(__METHOD__, $host);
+
         // Check to ensure that if the passed $host is identical,
         // simply return the original UriInterface instance
         if ($this->host === $host) {
@@ -551,7 +561,7 @@ class Uri implements UriInterface
      * @param string $part
      * @return string
      */
-    private function filterUserInfoPart($part)
+    private function filterUserInfo($part)
     {
         // Note the addition of `%` to initial charset; this allows `|` portion
         // to match and thus prevent double-encoding.
@@ -560,6 +570,59 @@ class Uri implements UriInterface
             [$this, 'urlEncodeChar'],
             $part
         );
+    }
+
+    /**
+     * Performs an internal test
+     * to ensure wether or not a given port
+     * is standard.
+     *
+     * @param $scheme
+     * @param $host
+     * @param $port
+     * @return bool
+     */
+    private function isNonStandardPort($scheme, $host, $port)
+    {
+        // If the scheme is present, perform additional checks
+        if (!$scheme) {
+            // Return false if the $host is present but NOT the $port
+            if (($host) && (!$port)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        // Return false if BOTH $host and $port are empty
+        if ((!$host) && (!$port)) {
+            return false;
+        }
+
+        // Check to ensure that the $port exists in
+        // our list of available schemes.
+        return !((isset($this->allowedSchemes[$scheme])) || ($port !== $this->allowedSchemes[$scheme]));
+    }
+
+    /**
+     * Internal test to ensure that
+     * a given param is a valid PHP string.
+     *
+     * @param string $method
+     * @param string $param
+     * @throws InvalidArgumentException
+     */
+    private function isValidString($method, $param)
+    {
+        // Check to see that the $param parameter is a valid string.
+        // If it is not, throw an exception.
+        if (is_string($param) === false) {
+            throw new InvalidArgumentException(sprintf(
+                    '%s expects a string argument; received %s',
+                    $method,
+                    (is_object($param)) ? get_class($param) : gettype($param))
+            );
+        }
     }
 
     /**

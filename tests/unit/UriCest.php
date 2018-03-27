@@ -323,6 +323,45 @@ class UriCest
     }
 
     /**
+     * Test to ensure that withHost will throw
+     * an exception if passed an invalid type as
+     * the host argument.
+     *
+     * @param UnitTester $I
+     * @param Example $example
+     * @dataprovider invalidPHPDataTypeDataProvider
+     * @group psr
+     * @group psr_7
+     * @group uri
+     */
+    public function tryToTestUriWithHostThrowsExceptionForInvalidType(UnitTester $I, Example $example)
+    {
+        $method = Uri::class . '::withHost';
+        $message = $method . ' expects a string argument; received ' . $example['type'];
+        $I->expectException(
+            new InvalidArgumentException($message),
+            function () use ($example) {
+                $this->uri->withHost($example['data']);
+            }
+        );
+    }
+
+    /**
+     * Test to ensure that if at minimum the $host portion of the
+     * authority is empty, an empty string is returned.
+     *
+     * @param UnitTester $I
+     * @group psr
+     * @group psr_7
+     * @group uri
+     */
+    public function tryToTestUriGetAuthorityWithEmptyHostReturnsEmptyString(UnitTester $I)
+    {
+        $this->uri->withHost('');
+        $I->assertEquals('', $this->uri->getAuthority());
+    }
+
+    /**
      * DataProvider used to test the UriInterface
      * with scheme will honor the requirement that
      * the scheme passed will validate regardless
