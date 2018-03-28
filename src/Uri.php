@@ -136,7 +136,7 @@ class Uri implements UriInterface
 
         // Check to see if we used a non-standard port number
         // If it IS a non-standard port add the port number
-        if (!$this->isNonStandardPort($this->scheme, $this->host, $this->port)) {
+        if ($this->isNonStandardPort($this->scheme, $this->host, $this->port)) {
             $authority .= ':' . $this->port;
         }
 
@@ -196,7 +196,7 @@ class Uri implements UriInterface
      */
     public function getPort()
     {
-        // TODO: Implement getPort() method.
+        return $this->port;
     }
 
     /**
@@ -338,7 +338,8 @@ class Uri implements UriInterface
 
         // Filter out and calculate the new userInfo
         $userInfo = $this->filterUserInfo($user);
-        if ($password) {
+
+        if ((empty($user) === false) && (empty($password) === false)) {
             $userInfo .= ':' . $this->filterUserInfo($password);
         }
 
@@ -406,7 +407,32 @@ class Uri implements UriInterface
      */
     public function withPort($port)
     {
-        // TODO: Implement withPort() method.
+        if (!is_numeric($port) && $port !== null) {
+            throw new InvalidArgumentException(sprintf(
+                'Invalid port "%s" specified; must be an integer, an integer string, or null',
+                (is_object($port) ? get_class($port) : gettype($port))
+            ));
+        }
+        if ($port !== null) {
+            $port = (int)$port;
+        }
+        if ($port === $this->port) {
+            // Do nothing if no change was made.
+            return $this;
+        }
+        if ($port !== null && ($port < 1 || $port > 65535)) {
+            throw new InvalidArgumentException(sprintf(
+                'Invalid port "%d" specified; must be a valid TCP/UDP port',
+                $port
+            ));
+        }
+
+        // Honor the immutability requirement
+        // and clone the existing UriInterface
+        $clone = clone $this;
+        $clone->port = $port;
+
+        return $clone;
     }
 
     /**
@@ -433,7 +459,37 @@ class Uri implements UriInterface
      */
     public function withPath($path)
     {
-        // TODO: Implement withPath() method.
+        if (!is_string($path)) {
+            throw new InvalidArgumentException(
+                'Invalid path provided; must be a string'
+            );
+        }
+
+        if (strpos($path, '?') !== false) {
+            throw new InvalidArgumentException(
+                'Invalid path provided; must not contain a query string'
+            );
+        }
+
+        if (strpos($path, '#') !== false) {
+            throw new InvalidArgumentException(
+                'Invalid path provided; must not contain a URI fragment'
+            );
+        }
+
+        $path = $this->filterPath($path);
+
+        if ($path === $this->path) {
+            // Do nothing if no change was made.
+            return $this;
+        }
+
+        // Honor the immutability requirement
+        // and clone the existing UriInterface
+        $clone = clone $this;
+        $clone->path = $path;
+
+        return $clone;
     }
 
     /**
@@ -524,6 +580,31 @@ class Uri implements UriInterface
     }
 
     /**
+     * Filters the path of a URI to ensure it is properly encoded.
+     *
+     * @param string $path
+     * @return string
+     */
+    private function filterPath($path)
+    {
+        $path = preg_replace_callback(
+            '/(?:[^' . self::CHAR_UNRESERVED . ')(:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/u',
+            [$this, 'urlEncodeChar'],
+            $path
+        );
+        if (empty($path)) {
+            // No path
+            return $path;
+        }
+        if ($path[0] !== '/') {
+            // Relative path
+            return $path;
+        }
+        // Ensure only one leading slash, to prevent XSS attempts.
+        return '/' . ltrim($path, '/');
+    }
+
+    /**
      * Filters the requested scheme against the
      * list of allowed/valid schemes available.
      *
@@ -565,11 +646,15 @@ class Uri implements UriInterface
     {
         // Note the addition of `%` to initial charset; this allows `|` portion
         // to match and thus prevent double-encoding.
-        return preg_replace_callback(
-            '/(?:[^%' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . ']+|%(?![A-Fa-f0-9]{2}))/u',
+        $pattern = '/(?:[^%' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . ']+|%(?![A-Fa-f0-9]{2}))/u';
+
+        $return = preg_replace_callback(
+            $pattern,
             [$this, 'urlEncodeChar'],
             $part
         );
+
+        return $return;
     }
 
     /**
@@ -601,7 +686,7 @@ class Uri implements UriInterface
 
         // Check to ensure that the $port exists in
         // our list of available schemes.
-        return !((isset($this->allowedSchemes[$scheme])) || ($port !== $this->allowedSchemes[$scheme]));
+        return !((isset($this->allowedSchemes[$scheme]) === true) || ($port !== $this->allowedSchemes[$scheme]));
     }
 
     /**
@@ -617,10 +702,12 @@ class Uri implements UriInterface
         // Check to see that the $param parameter is a valid string.
         // If it is not, throw an exception.
         if (is_string($param) === false) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(
+                sprintf(
                     '%s expects a string argument; received %s',
                     $method,
-                    (is_object($param)) ? get_class($param) : gettype($param))
+                    (is_object($param)) ? get_class($param) : gettype($param)
+                )
             );
         }
     }
