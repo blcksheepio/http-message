@@ -266,9 +266,9 @@ class UriTest extends TestCase
     public function hostDataProvider()
     {
         return [
-            ['', ''],
-            ['foo', ''],
-            ['foo', 'bar'],
+            [''],
+            ['foo'],
+            ['foo'],
         ];
     }
 
@@ -307,6 +307,61 @@ class UriTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage($message);
         $this->uri->withHost($host);
+    }
+
+    public function portDataProvider()
+    {
+        return [
+            [80],
+            [8080],
+            [443],
+        ];
+    }
+
+    /**
+     * @param $port
+     * @dataProvider portDataProvider
+     */
+    public function testWithPortReturnsSameInstanceIfPassedDetailsAreTheSame($port)
+    {
+        $uri = $this->uri->withPort($port);
+        self::assertSame($uri, $uri->withPort($port));
+    }
+
+    /**
+     * @param $port
+     * @dataProvider portDataProvider
+     */
+    public function testWithPortReturnsNewInstanceIfPasseDetailsAreDifferent($port)
+    {
+        $uri = $this->uri->withPort(9999);
+        self::assertNotSame($uri, $this->uri->withPort($port));
+    }
+
+    public function invalidPortDataProvider()
+    {
+        return [
+            [[]],
+            [['foo']],
+            [['foo' => 'foo']],
+            [new stdClass],
+        ];
+    }
+
+    /**
+     * @param $port
+     * @dataProvider invalidPortDataProvider
+     */
+    public function testWithPortReturnsInvalidArgumentExceptionIfInvalidTypeForPort($port)
+    {
+        $message = sprintf(
+            'Invalid port "%s" specified; must be an integer, an integer string, or null',
+            $port
+        );
+
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage($message);
+        $this->uri->withPort($port);
     }
 
     /**
