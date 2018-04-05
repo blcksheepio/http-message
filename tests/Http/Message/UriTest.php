@@ -3,10 +3,8 @@
 namespace Tests\Http\Message;
 
 use BlcksheepIO\Http\Message\Uri;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
-use stdClass;
 
 /**
  * Class UriTest
@@ -27,7 +25,7 @@ class UriTest extends TestCase
      * 3) Attempting to assign an invalid PHP data-type throws an InvalidArguementException
      *
      */
-    public function testWithPath()
+    /*public function testWithPath()
     {
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('Invalid path provided; must not contain a query string');
@@ -47,25 +45,25 @@ class UriTest extends TestCase
         $this->uri->withPath(['foo' => 'bar']);
         $this->uri->withPath(['foo']);
         $this->uri->withPath('');
-    }
+    }*/
 
     /**
      *
      */
-    public function testWithQuery()
+    /*public function testWithQuery()
     {
 
-    }
+    }*/
 
     /**
      *
      */
-    public function testWithFragment()
+    /*public function testWithFragment()
     {
 
-    }
+    }*/
 
-    public function testWithSchemaReturnsNewInstanceWhenNewScheme()
+    /*public function testWithSchemaReturnsNewInstanceWhenNewScheme()
     {
         $uri = $this->uri->withScheme('http');
         self::assertNotSame($this->uri, $uri);
@@ -103,21 +101,21 @@ class UriTest extends TestCase
             ['ftp://', 'Unsupported scheme requested "ftp"; must be empty or in the set (http, https)'],
             ['FTP://', 'Unsupported scheme requested "ftp"; must be empty or in the set (http, https)'],
         ];
-    }
+    }*/
 
     /**
      * @param $scheme
      * @param $message
      * @dataProvider invalidSchemeDataProvider
      */
-    public function testWithSchemeOnlyAcceptsHttpAndHttps($scheme, $message)
+    /*public function testWithSchemeOnlyAcceptsHttpAndHttps($scheme, $message)
     {
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage($message);
         $this->uri->withScheme($scheme);
-    }
+    }*/
 
-    public function invalidDataTypeDataProvider()
+    /*public function invalidDataTypeDataProvider()
     {
         return [
             [1234],
@@ -128,14 +126,14 @@ class UriTest extends TestCase
             [['foo' => 'foo']],
             [new stdClass],
         ];
-    }
+    }*/
 
     /**
      *
      * @param $scheme
      * @dataProvider invalidDataTypeDataProvider
      */
-    public function testWithSchemeThrowsInvalidArgumentExceptionIfInvalidType($scheme)
+    /*public function testWithSchemeThrowsInvalidArgumentExceptionIfInvalidType($scheme)
     {
         $message = sprintf(
             '%s expects a string argument; received %s',
@@ -146,9 +144,9 @@ class UriTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage($message);
         $this->uri->withScheme($scheme);
-    }
+    }*/
 
-    public function testWithUserInfoAcceptsUserPart()
+    /*public function testWithUserInfoAcceptsUserPart()
     {
         self::assertEquals('foo', $this->uri->withUserInfo('foo')->getUserInfo());
     }
@@ -175,36 +173,36 @@ class UriTest extends TestCase
             ['foo', ''],
             ['foo', 'bar'],
         ];
-    }
+    }*/
 
     /**
      * @param $user
      * @param $password
      * @dataProvider credentialsDataProvider
      */
-    public function testWithUserInfoReturnsSameInstanceIfPassedDetailsAreTheSame($user, $password)
+    /*public function testWithUserInfoReturnsSameInstanceIfPassedDetailsAreTheSame($user, $password)
     {
         $uri = $this->uri->withUserInfo($user, $password);
         self::assertSame($uri, $uri->withUserInfo($user, $password));
-    }
+    }*/
 
     /**
      * @param $user
      * @param $password
      * @dataProvider credentialsDataProvider
      */
-    public function testWithUserInfoReturnsNewInstanceIfPasseDetailsAreDifferent($user, $password)
+    /*public function testWithUserInfoReturnsNewInstanceIfPasseDetailsAreDifferent($user, $password)
     {
         $uri = $this->uri->withUserInfo('jason', 'lamb');
         self::assertNotSame($uri, $this->uri->withUserInfo($user, $password));
-    }
+    }*/
 
     /**
      *
      * @param $userInfo
      * @dataProvider invalidDataTypeDataProvider
      */
-    public function testWithUserInfoInvalidArgumentExceptionIfInvalidTypeForUser($userInfo)
+    /*public function testWithUserInfoInvalidArgumentExceptionIfInvalidTypeForUser($userInfo)
     {
         $message = sprintf(
             '%s expects a string argument; received %s',
@@ -215,14 +213,14 @@ class UriTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage($message);
         $this->uri->withUserInfo($userInfo);
-    }
+    }*/
 
     /**
      *
      * @param $userInfo
      * @dataProvider invalidDataTypeDataProvider
      */
-    public function testWithUserInfoInvalidArgumentExceptionIfInvalidTypeForPassword($userInfo)
+    /*public function testWithUserInfoInvalidArgumentExceptionIfInvalidTypeForPassword($userInfo)
     {
         $message = sprintf(
             '%s expects a string argument; received %s',
@@ -233,9 +231,9 @@ class UriTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage($message);
         $this->uri->withUserInfo('foo', $userInfo);
-    }
+    }*/
 
-    public function withUserInfoEncodingDataProvider()
+    /*public function withUserInfoEncodingDataProvider()
     {
         return [
             // name       => [ user,              credential, expected ]
@@ -245,7 +243,7 @@ class UriTest extends TestCase
             'percent'     => ['%25', '%25', '%25:%25'],
             'invalid-enc' => ['%ZZ', '%GG', '%25ZZ:%25GG'],
         ];
-    }
+    }*/
 
     /**
      * @param $user
@@ -253,7 +251,7 @@ class UriTest extends TestCase
      * @param $expected
      * @dataProvider    withUserInfoEncodingDataProvider()
      */
-    public function testWithUserInfoEncoding($user, $password, $expected)
+    /*public function testWithUserInfoEncoding($user, $password, $expected)
     {
         self::assertEquals($expected, $this->uri->withUserInfo($user, $password)->getUserInfo());
     }
@@ -270,33 +268,33 @@ class UriTest extends TestCase
             ['foo'],
             ['foo'],
         ];
-    }
+    }*/
 
     /**
      * @param $host
      * @dataProvider hostDataProvider
      */
-    public function testWithHostReturnsSameInstanceIfPassedDetailsAreTheSame($host)
+    /*public function testWithHostReturnsSameInstanceIfPassedDetailsAreTheSame($host)
     {
         $uri = $this->uri->withHost($host);
         self::assertSame($uri, $uri->withHost($host));
-    }
+    }*/
 
     /**
      * @param $host
      * @dataProvider hostDataProvider
      */
-    public function testWithHostInfoReturnsNewInstanceIfPasseDetailsAreDifferent($host)
+    /*public function testWithHostInfoReturnsNewInstanceIfPasseDetailsAreDifferent($host)
     {
         $uri = $this->uri->withHost('foobar');
         self::assertNotSame($uri, $this->uri->withHost($host));
-    }
+    }*/
 
     /**
      * @param $host
      * @dataProvider invalidDataTypeDataProvider
      */
-    public function testWithHostInfoInvalidArgumentExceptionIfInvalidTypeForUser($host)
+    /*public function testWithHostInfoInvalidArgumentExceptionIfInvalidTypeForUser($host)
     {
         $message = sprintf(
             '%s expects a string argument; received %s',
@@ -307,38 +305,38 @@ class UriTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage($message);
         $this->uri->withHost($host);
-    }
+    }*/
 
-    public function portDataProvider()
+    /*public function portDataProvider()
     {
         return [
             [80],
             [8080],
             [443],
         ];
-    }
+    }*/
 
     /**
      * @param $port
      * @dataProvider portDataProvider
      */
-    public function testWithPortReturnsSameInstanceIfPassedDetailsAreTheSame($port)
+    /*public function testWithPortReturnsSameInstanceIfPassedDetailsAreTheSame($port)
     {
         $uri = $this->uri->withPort($port);
         self::assertSame($uri, $uri->withPort($port));
-    }
+    }*/
 
     /**
      * @param $port
      * @dataProvider portDataProvider
      */
-    public function testWithPortReturnsNewInstanceIfPasseDetailsAreDifferent($port)
+    /*public function testWithPortReturnsNewInstanceIfPasseDetailsAreDifferent($port)
     {
         $uri = $this->uri->withPort(9999);
         self::assertNotSame($uri, $this->uri->withPort($port));
-    }
+    }*/
 
-    public function invalidPortDataProvider()
+    /*public function invalidPortDataProvider()
     {
         return [
             [[]],
@@ -346,13 +344,13 @@ class UriTest extends TestCase
             [['foo' => 'foo']],
             [new stdClass],
         ];
-    }
+    }*/
 
     /**
      * @param $port
      * @dataProvider invalidPortDataProvider
      */
-    public function testWithPortReturnsInvalidArgumentExceptionIfInvalidTypeForPort($port)
+    /*public function testWithPortReturnsInvalidArgumentExceptionIfInvalidTypeForPort($port)
     {
         $message = sprintf(
             'Invalid port "%s" specified; must be an integer, an integer string, or null',
@@ -362,7 +360,7 @@ class UriTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage($message);
         $this->uri->withPort($port);
-    }
+    }*/
 
     /**
      * Sets up the fixture, for example, open a network connection.
