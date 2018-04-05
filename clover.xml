@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1522926249">
+    <project timestamp="1522926249">
+        <package name="BlcksheepIO\Http\Message">
+            <file name="/opt/project/src/Uri.php">
+                <class name="BlcksheepIO\Http\Message\Uri" namespace="BlcksheepIO\Http\Message"
+                       fullPackage="BlcksheepIO" package="BlcksheepIO">
+                    <metrics complexity="56" methods="23" coveredmethods="2" conditionals="0" coveredconditionals="0"
+                             statements="114" coveredstatements="15" elements="137" coveredelements="17"/>
+                </class>
+                <line num="102" type="method" name="getScheme" visibility="public" complexity="1" crap="1" count="5"/>
+                <line num="104" type="stmt" count="5"/>
+                <line num="125" type="method" name="getAuthority" visibility="public" complexity="4" crap="20"
+                      count="0"/>
+                <line num="127" type="stmt" count="0"/>
+                <line num="128" type="stmt" count="0"/>
+                <line num="132" type="stmt" count="0"/>
+                <line num="133" type="stmt" count="0"/>
+                <line num="134" type="stmt" count="0"/>
+                <line num="139" type="stmt" count="0"/>
+                <line num="140" type="stmt" count="0"/>
+                <line num="143" type="stmt" count="0"/>
+                <line num="161" type="method" name="getUserInfo" visibility="public" complexity="1" crap="2" count="0"/>
+                <line num="163" type="stmt" count="0"/>
+                <line num="177" type="method" name="getHost" visibility="public" complexity="1" crap="2" count="0"/>
+                <line num="179" type="stmt" count="0"/>
+                <line num="197" type="method" name="getPort" visibility="public" complexity="1" crap="2" count="0"/>
+                <line num="199" type="stmt" count="0"/>
+                <line num="227" type="method" name="getPath" visibility="public" complexity="1" crap="2" count="0"/>
+                <line num="230" type="stmt" count="0"/>
+                <line num="252" type="method" name="getQuery" visibility="public" complexity="1" crap="2" count="0"/>
+                <line num="255" type="stmt" count="0"/>
+                <line num="273" type="method" name="getFragment" visibility="public" complexity="1" crap="2" count="0"/>
+                <line num="276" type="stmt" count="0"/>
+                <line num="293" type="method" name="withScheme" visibility="public" complexity="2" crap="2.01"
+                      count="4"/>
+                <line num="297" type="stmt" count="4"/>
+                <line num="300" type="stmt" count="4"/>
+                <line num="303" type="stmt" count="4"/>
+                <line num="304" type="stmt" count="0"/>
+                <line num="308" type="stmt" count="4"/>
+                <line num="309" type="stmt" count="4"/>
+                <line num="311" type="stmt" count="4"/>
+                <line num="328" type="method" name="withUserInfo" visibility="public" complexity="5" crap="30"
+                      count="0"/>
+                <line num="332" type="stmt" count="0"/>
+                <line num="335" type="stmt" count="0"/>
+                <line num="336" type="stmt" count="0"/>
+                <line num="340" type="stmt" count="0"/>
+                <line num="342" type="stmt" count="0"/>
+                <line num="343" type="stmt" count="0"/>
+                <line num="348" type="stmt" count="0"/>
+                <line num="349" type="stmt" count="0"/>
+                <line num="354" type="stmt" count="0"/>
+                <line num="355" type="stmt" count="0"/>
+                <line num="357" type="stmt" count="0"/>
+                <line num="372" type="method" name="withHost" visibility="public" complexity="2" crap="6" count="0"/>
+                <line num="375" type="stmt" count="0"/>
+                <line num="379" type="stmt" count="0"/>
+                <line num="380" type="stmt" count="0"/>
+                <line num="385" type="stmt" count="0"/>
+                <line num="386" type="stmt" count="0"/>
+                <line num="388" type="stmt" count="0"/>
+                <line num="408" type="method" name="withPort" visibility="public" complexity="9" crap="90" count="0"/>
+                <line num="410" type="stmt" count="0"/>
+                <line num="411" type="stmt" count="0"/>
+                <line num="412" type="stmt" count="0"/>
+                <line num="413" type="stmt" count="0"/>
+                <line num="416" type="stmt" count="0"/>
+                <line num="417" type="stmt" count="0"/>
+                <line num="419" type="stmt" count="0"/>
+                <line num="421" type="stmt" count="0"/>
+                <line num="423" type="stmt" count="0"/>
+                <line num="424" type="stmt" count="0"/>
+                <line num="425" type="stmt" count="0"/>
+                <line num="426" type="stmt" count="0"/>
+                <line num="432" type="stmt" count="0"/>
+                <line num="433" type="stmt" count="0"/>
+                <line num="435" type="stmt" count="0"/>
+                <line num="460" type="method" name="withPath" visibility="public" complexity="5" crap="30" count="0"/>
+                <line num="462" type="stmt" count="0"/>
+                <line num="463" type="stmt" count="0"/>
+                <line num="464" type="stmt" count="0"/>
+                <line num="468" type="stmt" count="0"/>
+                <line num="469" type="stmt" count="0"/>
+                <line num="470" type="stmt" count="0"/>
+                <line num="474" type="stmt" count="0"/>
+                <line num="475" type="stmt" count="0"/>
+                <line num="476" type="stmt" count="0"/>
+                <line num="480" type="stmt" count="0"/>
+                <line num="482" type="stmt" count="0"/>
+                <line num="484" type="stmt" count="0"/>
+                <line num="489" type="stmt" count="0"/>
+                <line num="490" type="stmt" count="0"/>
+                <line num="492" type="stmt" count="0"/>
+                <line num="510" type="method" name="withQuery" visibility="public" complexity="1" crap="2" count="0"/>
+                <line num="513" type="stmt" count="0"/>
+                <line num="529" type="method" name="withFragment" visibility="public" complexity="1" crap="2"
+                      count="0"/>
+                <line num="532" type="stmt" count="0"/>
+                <line num="549" type="method" name="__clone" visibility="public" complexity="1" crap="1" count="4"/>
+                <line num="552" type="stmt" count="4"/>
+                <line num="577" type="method" name="__toString" visibility="public" complexity="1" crap="2" count="0"/>
+                <line num="579" type="stmt" count="0"/>
+                <line num="588" type="method" name="filterPath" visibility="private" complexity="3" crap="12"
+                      count="0"/>
+                <line num="590" type="stmt" count="0"/>
+                <line num="591" type="stmt" count="0"/>
+                <line num="592" type="stmt" count="0"/>
+                <line num="593" type="stmt" count="0"/>
+                <line num="595" type="stmt" count="0"/>
+                <line num="597" type="stmt" count="0"/>
+                <line num="599" type="stmt" count="0"/>
+                <line num="601" type="stmt" count="0"/>
+                <line num="604" type="stmt" count="0"/>
+                <line num="614" type="method" name="filterScheme" visibility="private" complexity="3" crap="4.46"
+                      count="4"/>
+                <line num="617" type="stmt" count="4"/>
+                <line num="618" type="stmt" count="4"/>
+                <line num="621" type="stmt" count="4"/>
+                <line num="622" type="stmt" count="0"/>
+                <line num="626" type="stmt" count="4"/>
+                <line num="627" type="stmt" count="0"/>
+                <line num="628" type="stmt" count="0"/>
+                <line num="629" type="stmt" count="0"/>
+                <line num="630" type="stmt" count="0"/>
+                <line num="631" type="stmt" count="0"/>
+                <line num="636" type="stmt" count="4"/>
+                <line num="645" type="method" name="filterUserInfo" visibility="private" complexity="1" crap="2"
+                      count="0"/>
+                <line num="649" type="stmt" count="0"/>
+                <line num="651" type="stmt" count="0"/>
+                <line num="652" type="stmt" count="0"/>
+                <line num="653" type="stmt" count="0"/>
+                <line num="654" type="stmt" count="0"/>
+                <line num="657" type="stmt" count="0"/>
+                <line num="670" type="method" name="isNonStandardPort" visibility="private" complexity="7" crap="56"
+                      count="0"/>
+                <line num="673" type="stmt" count="0"/>
+                <line num="675" type="stmt" count="0"/>
+                <line num="676" type="stmt" count="0"/>
+                <line num="679" type="stmt" count="0"/>
+                <line num="683" type="stmt" count="0"/>
+                <line num="684" type="stmt" count="0"/>
+                <line num="689" type="stmt" count="0"/>
+                <line num="700" type="method" name="isValidString" visibility="private" complexity="3" crap="6.28"
+                      count="4"/>
+                <line num="704" type="stmt" count="4"/>
+                <line num="705" type="stmt" count="0"/>
+                <line num="706" type="stmt" count="0"/>
+                <line num="707" type="stmt" count="0"/>
+                <line num="708" type="stmt" count="0"/>
+                <line num="709" type="stmt" count="0"/>
+                <line num="713" type="stmt" count="4"/>
+                <line num="721" type="method" name="urlEncodeChar" visibility="private" complexity="1" crap="2"
+                      count="0"/>
+                <line num="723" type="stmt" count="0"/>
+                <metrics loc="725" ncloc="246" classes="1" methods="23" coveredmethods="2" conditionals="0"
+                         coveredconditionals="0" statements="114" coveredstatements="15" elements="137"
+                         coveredelements="17"/>
+            </file>
+        </package>
+        <metrics files="1" loc="725" ncloc="246" classes="1" methods="23" coveredmethods="2" conditionals="0"
+                 coveredconditionals="0" statements="114" coveredstatements="15" elements="137" coveredelements="17"/>
+    </project>
+</coverage>
