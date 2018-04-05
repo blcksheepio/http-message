@@ -23,3 +23,8 @@ after_success:
   # Submit our coverage report to Coveralls
   - travis_retry php vendor/bin/php-coveralls -v
   - bash <(curl -s https://codecov.io/bash)
+
+# Only going to monitor the major branch
+branches:
+  only:
+    - master
