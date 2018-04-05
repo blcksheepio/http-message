@@ -1,5 +1,25 @@
+# Tells Travis CI that we're working in PHP
 language: php
+
+# Define the PHP version(s) we'll be testing against
 php:
   - '7.1'
+
+# Install procedures
 install:
-  - composer install
+  # Install composer dependencies
+  - travis_retry composer install
+  # Test the PHP Coveralls installation works correctly
+  - php vendor/bin/php-coveralls --version
+
+# Before any script execution
+before_script:
+  # Create a storage folder for logs
+  - mkdir -p build/logs
+  - ls -al
+
+# After success
+after_success:
+  # Submit our coverage report to Coveralls
+  - travis_retry php vendor/bin/php-coveralls -v
+  - bash <(curl -s https://codecov.io/bash)
