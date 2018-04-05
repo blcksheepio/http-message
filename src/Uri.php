@@ -86,6 +86,30 @@ class Uri implements UriInterface
     protected $userInfo = '';
 
     /**
+     * Uri constructor.
+     *
+     * @param string $uri
+     */
+    public function __construct($uri = '')
+    {
+        // Check to see if a valid string is passed
+        if (!is_string($uri)) {
+            // Throw an execption
+            throw new InvalidArgumentException(
+                sprintf(
+                    'URI constructor argument needs to be a valid string: received %s',
+                    (is_object($uri) ? get_class($uri) : gettype($uri))
+                )
+            );
+        }
+
+        // If the string is NOT empty.. parse it
+        if (!empty($uri)) {
+            $this->parseUri($uri);
+        }
+    }
+
+    /**
      * Retrieve the scheme component of the URI.
      *
      * If no scheme is present, this method MUST return an empty string.
@@ -721,5 +745,32 @@ class Uri implements UriInterface
     private function urlEncodeChar(array $matches)
     {
         return rawurlencode($matches[0]);
+    }
+
+    /**
+     * Break up a Uri string into
+     * it's separate components and
+     * set our Uri properties.
+     *
+     * @param $uri
+     */
+    private function parseUri($uri)
+    {
+        // Use parse_uri to break up the $uri
+        $parts = parse_url($uri);
+
+        // Check to see if we have an invalid uri
+        if (false === $parts) {
+            throw new InvalidArgumentException('Invalid source URI present. Uri appears to be malformed');
+        }
+
+        // Set our properties
+        $this->scheme = (isset($parts['scheme'])) ? $this->filterScheme($parts['scheme']) : '';
+        $this->userInfo = (isset($parts['user'])) ? $this->filterUserInfo($parts['user']) : '';
+
+        // Check to see if the password was included too
+        if (isset($parts['pass'])) {
+            $this->userInfo .= ':' . $parts['pass'];
+        }
     }
 }
