@@ -93,15 +93,7 @@ class Uri implements UriInterface
     public function __construct($uri = '')
     {
         // Check to see if a valid string is passed
-        if (!is_string($uri)) {
-            // Throw an execption
-            throw new InvalidArgumentException(
-                sprintf(
-                    'URI constructor argument needs to be a valid string: received %s',
-                    (is_object($uri) ? get_class($uri) : gettype($uri))
-                )
-            );
-        }
+        $this->isValidString(__METHOD__, $uri);
 
         // If the string is NOT empty.. parse it
         if (!empty($uri)) {
@@ -407,7 +399,7 @@ class Uri implements UriInterface
         // Honor the immutability requirement
         // and clone the existing UriInterface
         $clone = clone $this;
-        $clone->host = $host;
+        $clone->host = strtolower($host);
 
         return $clone;
     }
@@ -767,6 +759,7 @@ class Uri implements UriInterface
         // Set our properties
         $this->scheme = (isset($parts['scheme'])) ? $this->filterScheme($parts['scheme']) : '';
         $this->userInfo = (isset($parts['user'])) ? $this->filterUserInfo($parts['user']) : '';
+        $this->host = (isset($parts['host'])) ? strtolower($parts['host']) : '';
 
         // Check to see if the password was included too
         if (isset($parts['pass'])) {
