@@ -65,9 +65,9 @@ class Uri implements UriInterface
      * The port number used
      * in the Uri instance.
      *
-     * @var string $port
+     * @var int $port
      */
-    protected $port = '';
+    protected $port = null;
 
     /**
      * The RFC compliant

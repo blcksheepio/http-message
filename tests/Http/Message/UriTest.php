@@ -127,7 +127,7 @@ class UriTest extends TestCase
     /**
      * @return array
      */
-    public function invalidPHPDataTypesForSchemeDataProvider()
+    public function invalidPHPDataTypesDataProvider()
     {
         return [
             [123],
@@ -140,7 +140,7 @@ class UriTest extends TestCase
 
     /**
      * @param $scheme
-     * @dataProvider invalidPHPDataTypesForSchemeDataProvider
+     * @dataProvider invalidPHPDataTypesDataProvider
      */
     public function testWithSchemeThrowsExceptionWhenInvalidDataTypeIsUsed($scheme)
     {
@@ -185,7 +185,7 @@ class UriTest extends TestCase
 
     /**
      * @param $user
-     * @dataProvider invalidPHPDataTypesForSchemeDataProvider
+     * @dataProvider invalidPHPDataTypesDataProvider
      */
     public function testWithUserInfoThrowsExceptionWhenUserIsInvalidDataType($user)
     {
@@ -197,7 +197,7 @@ class UriTest extends TestCase
 
     /**
      * @param $user
-     * @dataProvider invalidPHPDataTypesForSchemeDataProvider
+     * @dataProvider invalidPHPDataTypesDataProvider
      */
     public function testWithUserInfoThrowsExceptionWhenPasswordIsInvalidDataType($password)
     {
@@ -207,7 +207,7 @@ class UriTest extends TestCase
         $uri->withUserInfo('foo', $password);
     }
 
-    public function userInfoProvider()
+    public function userInfoProviderDataProvider()
     {
         return [
             // name       => [ user,              credential, expected ]
@@ -223,7 +223,7 @@ class UriTest extends TestCase
      * @param $user
      * @param $password
      * @param $expected
-     * @dataProvider userInfoProvider
+     * @dataProvider userInfoProviderDataProvider
      */
     public function testWithUserCorrectlyEncodesUserNameAndPassword($user, $password, $expected)
     {
@@ -265,7 +265,7 @@ class UriTest extends TestCase
 
     /**
      * @param $host
-     * @dataProvider invalidPHPDataTypesForSchemeDataProvider
+     * @dataProvider invalidPHPDataTypesDataProvider
      */
     public function testWithHostThrowsExceptionWhenInvalidDataTypeIsUsed($host)
     {
@@ -273,5 +273,77 @@ class UriTest extends TestCase
         self::expectExceptionMessage('BlcksheepIO\Http\Message\Uri::withHost expects a string argument; received ' . ((is_object($host)) ? get_class($host) : gettype($host)));
         $uri = new Uri();
         $uri->withHost($host);
+    }
+
+    public function testWithPortReturnsSameInstanceWhenPortIsIdentical()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withPort(80);
+        self::assertNotSame($uri, $new);
+        self::assertSame(80, $new->getPort());
+    }
+
+    public function testWithPortReturnsSameInstanceIfWhenPortIsIdentical()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withPort(3001);
+        self::assertNotSame($uri, $new);
+        self::assertEquals(3001, $new->getPort());
+    }
+
+    public function validPortDataTypesDataProvider()
+    {
+        return [
+            'integer' => [80],
+            'string'  => ['80'],
+            'null'    => [null],
+        ];
+    }
+
+    /**
+     * @param $port
+     * @dataProvider validPortDataTypesDataProvider
+     */
+    public function testWithPortAcceptsValidDataTypes($port)
+    {
+        $uri = new Uri();
+        $new = $uri->withPort($port);
+        self::assertEquals($port, $new->getPort());
+    }
+
+    public function invalidPortDataTypesDataProvider()
+    {
+        return [
+            'true'      => [true],
+            'false'     => [false],
+            'string'    => ['string'],
+            'array'     => [[3000]],
+            'object'    => [(object)[3000]],
+            'zero'      => [0],
+            'too-small' => [-1],
+            'too-big'   => [65536],
+        ];
+    }
+
+    /**
+     * @param $port
+     * @dataProvider invalidPortDataTypesDataProvider
+     */
+    public function testWithPortThrowsExceptionWhenInvalidDataTypeIsUsed($port)
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Invalid port');
+        $uri = new Uri();
+        $uri->withPort($port);
+    }
+
+    public function testWithThrowsExceptionIfPortIsOutOfRange()
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Invalid port "0" specified; must be a valid TCP/UDP port');
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withPort(0);
+        self::expectExceptionMessage('Invalid port "65536" specified; must be a valid TCP/UDP port');
+        $new = $uri->withPort(65536);
     }
 }
