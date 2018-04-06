@@ -19,6 +19,7 @@ class UriTest extends TestCase
         self::assertSame('https', $uri->getScheme());
         self::assertSame('user:pass', $uri->getUserInfo());
         self::assertSame('local.example.com', $uri->getHost());
+        self::assertSame(3001, $uri->getPort());
     }
 
     public function testWithSchemeReturnsNewUriInstanceWhenNewScheme()
@@ -287,7 +288,7 @@ class UriTest extends TestCase
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withPort(3001);
-        self::assertNotSame($uri, $new);
+        self::assertSame($uri, $new);
         self::assertEquals(3001, $new->getPort());
     }
 

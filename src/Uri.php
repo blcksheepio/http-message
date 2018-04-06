@@ -760,6 +760,7 @@ class Uri implements UriInterface
         $this->scheme = (isset($parts['scheme'])) ? $this->filterScheme($parts['scheme']) : '';
         $this->userInfo = (isset($parts['user'])) ? $this->filterUserInfo($parts['user']) : '';
         $this->host = (isset($parts['host'])) ? strtolower($parts['host']) : '';
+        $this->port = (isset($parts['port'])) ? (int)$parts['port'] : null;
 
         // Check to see if the password was included too
         if (isset($parts['pass'])) {
