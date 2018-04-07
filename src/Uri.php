@@ -556,26 +556,6 @@ class Uri implements UriInterface
     }
 
     /**
-     * When an object is cloned, PHP 5 will perform a shallow copy of all of the object's properties.
-     * Any properties that are references to other variables, will remain references.
-     * Once the cloning is complete, if a __clone() method is defined,
-     * then the newly created object's __clone() method will be called, to allow any necessary properties that need to be changed.
-     * NOT CALLABLE DIRECTLY.
-     *
-     * CONSIDERING THAT CLONING IS GENERALY USED DURING PERMUTATION,
-     * WE CAN SIMPLY RESET THE $uriString PROPERTY SO THAT IT CAN
-     * BE RE-CALCUMATED.
-     *
-     * @return mixed
-     * @link http://php.net/manual/en/language.oop5.cloning.php
-     * @TODO: RESET $uriString cache!
-     */
-    public function __clone()
-    {
-        // TODO: Implement __clone() method.
-    }
-
-    /**
      * Return the string representation as a URI reference.
      *
      * Depending on which components of the URI are present, the resulting
