@@ -276,7 +276,7 @@ class UriTest extends TestCase
         $uri->withHost($host);
     }
 
-    public function testWithPortReturnsSameInstanceWhenPortIsIdentical()
+    public function testWithPortReturnsNewInstanceWhenNewPort()
     {
         $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withPort(80);
