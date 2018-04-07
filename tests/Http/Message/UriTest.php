@@ -347,4 +347,59 @@ class UriTest extends TestCase
         self::expectExceptionMessage('Invalid port "65536" specified; must be a valid TCP/UDP port');
         $new = $uri->withPort(65536);
     }
+
+    public function testWithPathReturnsNewInstanceWhenNewPath()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withPath('/foo/bar');
+        self::assertNotSame($uri, $new);
+        self::assertSame('/foo/bar', $new->getPath());
+    }
+
+    public function testWithPathReturnsSamePathIfPathIsIdentical()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withPath('/foo');
+        self::assertSame($uri, $new);
+        self::assertSame('/foo', $new->getPath());
+    }
+
+    public function invalidPathDataProvider()
+    {
+        return [
+            'null'   => [null],
+            'true'   => [true],
+            'false'  => [false],
+            'array'  => [['/bar/baz']],
+            'object' => [(object)['/bar/baz']],
+        ];
+    }
+
+    /**
+     * @param $path
+     * @dataProvider invalidPathDataProvider
+     */
+    public function testWithPathThrowsExceptionWhenInvalidDataTypeIsUsed($path)
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Invalid path provided; must be a string');
+        $uri = new Uri();
+        $uri->withPath($path);
+    }
+
+    public function testWithPathThrowsExecptionWhenQueryStringIsProvided()
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Invalid path provided; must not contain a query string');
+        $uri = new Uri();
+        $uri->withPath('/foo?bar=baz');
+    }
+
+    public function testWithPathThrowsExecptionWhenUrlFragmentIsProvided()
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Invalid path provided; must not contain a URI fragment');
+        $uri = new Uri();
+        $uri->withPath('/foo#bar');
+    }
 }

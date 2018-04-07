@@ -62,6 +62,14 @@ class Uri implements UriInterface
     protected $host = '';
 
     /**
+     * Represents the valid
+     * path of the Uri.
+     *
+     * @var string $path
+     */
+    protected $path = '';
+
+    /**
      * The port number used
      * in the Uri instance.
      *
@@ -242,7 +250,7 @@ class Uri implements UriInterface
      */
     public function getPath()
     {
-        // TODO: Implement getPath() method.
+        return $this->path;
     }
 
     /**
@@ -608,16 +616,22 @@ class Uri implements UriInterface
             [$this, 'urlEncodeChar'],
             $path
         );
+
         if (empty($path)) {
             // No path
             return $path;
         }
+
+        // TODO: Investigate if this is the fastest way to do this?!?
         if ($path[0] !== '/') {
             // Relative path
             return $path;
         }
+
         // Ensure only one leading slash, to prevent XSS attempts.
-        return '/' . ltrim($path, '/');
+        $path = '/' . ltrim($path, '/');
+
+        return $path;
     }
 
     /**
@@ -761,6 +775,7 @@ class Uri implements UriInterface
         $this->userInfo = (isset($parts['user'])) ? $this->filterUserInfo($parts['user']) : '';
         $this->host = (isset($parts['host'])) ? strtolower($parts['host']) : '';
         $this->port = (isset($parts['port'])) ? (int)$parts['port'] : null;
+        $this->path = (isset($parts['path'])) ? $this->filterPath($parts['path']) : '';
 
         // Check to see if the password was included too
         if (isset($parts['pass'])) {
