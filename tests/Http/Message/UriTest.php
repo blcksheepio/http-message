@@ -338,7 +338,7 @@ class UriTest extends TestCase
         $uri->withPort($port);
     }
 
-    public function testWithThrowsExceptionIfPortIsOutOfRange()
+    public function testWithPortThrowsExceptionIfPortIsOutOfRange()
     {
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('Invalid port "0" specified; must be a valid TCP/UDP port');
