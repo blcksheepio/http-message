@@ -20,6 +20,9 @@ class UriTest extends TestCase
         self::assertSame('user:pass', $uri->getUserInfo());
         self::assertSame('local.example.com', $uri->getHost());
         self::assertSame(3001, $uri->getPort());
+        self::assertSame('/foo', $uri->getPath());
+        self::assertSame('bar=baz', $uri->getQuery());
+
     }
 
     public function testWithSchemeReturnsNewUriInstanceWhenNewScheme()
@@ -401,5 +404,55 @@ class UriTest extends TestCase
         self::expectExceptionMessage('Invalid path provided; must not contain a URI fragment');
         $uri = new Uri();
         $uri->withPath('/foo#bar');
+    }
+
+    public function testWithQueryReturnsNewInstanceWhenNewQuery()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withQuery('?foo=bar&bar=baz');
+        self::assertNotSame($uri, $new);
+        self::assertSame('foo=bar&bar=baz', $new->getQuery());
+    }
+
+    public function testWithQueryReturnsSameInstanceIfQueryIsIdentical()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withQuery('?bar=baz');
+        self::assertSame($uri, $new);
+        self::assertSame('bar=baz', $new->getQuery());
+    }
+
+    /**
+     * @return array
+     */
+    public function invalidQueryStringsDataProvider()
+    {
+        return [
+            'null'   => [null],
+            'true'   => [true],
+            'false'  => [false],
+            'array'  => [['baz=bat']],
+            'object' => [(object)['baz=bat']],
+        ];
+    }
+
+    /**
+     * @param $query
+     * @dataProvider invalidQueryStringsDataProvider
+     */
+    public function testWithQueryThrowsExceptionIfInvalidQueryIsPassed($query)
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('BlcksheepIO\Http\Message\Uri::withQuery expects a string argument;');
+        $uri = new Uri();
+        $uri->withQuery($query);
+    }
+
+    public function testWithQueryThrowsExceptionIfUrlFragmentIsPassed()
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Query string must not include a URI fragment');
+        $uri = new Uri();
+        $uri->withQuery('?test=test#myfragment');
     }
 }

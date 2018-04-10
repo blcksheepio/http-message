@@ -78,6 +78,14 @@ class Uri implements UriInterface
     protected $port = null;
 
     /**
+     * Represents a valid
+     * query string.
+     *
+     * @var string $query
+     */
+    protected $query = '';
+
+    /**
      * The RFC compliant
      * scheme used;
      *
@@ -108,6 +116,35 @@ class Uri implements UriInterface
             $this->parseUri($uri);
         }
     }
+
+    /**
+     * Return the string representation as a URI reference.
+     *
+     * Depending on which components of the URI are present, the resulting
+     * string is either a full URI or relative reference according to RFC 3986,
+     * Section 4.1. The method concatenates the various components of the URI,
+     * using the appropriate delimiters:
+     *
+     * - If a scheme is present, it MUST be suffixed by ":".
+     * - If an authority is present, it MUST be prefixed by "//".
+     * - The path can be concatenated without delimiters. But there are two
+     *   cases where the path has to be adjusted to make the URI reference
+     *   valid as PHP does not allow to throw an exception in __toString():
+     *     - If the path is rootless and an authority is present, the path MUST
+     *       be prefixed by "/".
+     *     - If the path is starting with more than one "/" and no authority is
+     *       present, the starting slashes MUST be reduced to one.
+     * - If a query is present, it MUST be prefixed by "?".
+     * - If a fragment is present, it MUST be prefixed by "#".
+     *
+     * @see http://tools.ietf.org/html/rfc3986#section-4.1
+     * @return string
+     */
+    public function __toString()
+    {
+        return '';
+    }
+
 
     /**
      * Retrieve the scheme component of the URI.
@@ -275,7 +312,7 @@ class Uri implements UriInterface
      */
     public function getQuery()
     {
-        // TODO: Implement getQuery() method.
+        return $this->query;
     }
 
     /**
@@ -533,7 +570,27 @@ class Uri implements UriInterface
      */
     public function withQuery($query)
     {
-        // TODO: Implement withQuery() method.
+        // Throw an exception if the $query is not a valid string
+        $this->isValidString(__METHOD__, $query);
+
+        // Thow an exception if a # is present
+        if (strpos($query, '#') !== false) {
+            throw new InvalidArgumentException('Query string must not include a URI fragment');
+        }
+
+        // FIlter the query
+        $query = $this->filterQuery($query);
+
+        // If identical return the original instance
+        if ($query === $this->query) {
+            return $this;
+        }
+
+        // New  query so clone and return
+        $clone = clone $this;
+        $clone->query = $query;
+
+        return $clone;
     }
 
     /**
@@ -553,34 +610,6 @@ class Uri implements UriInterface
     public function withFragment($fragment)
     {
         // TODO: Implement withFragment() method.
-    }
-
-    /**
-     * Return the string representation as a URI reference.
-     *
-     * Depending on which components of the URI are present, the resulting
-     * string is either a full URI or relative reference according to RFC 3986,
-     * Section 4.1. The method concatenates the various components of the URI,
-     * using the appropriate delimiters:
-     *
-     * - If a scheme is present, it MUST be suffixed by ":".
-     * - If an authority is present, it MUST be prefixed by "//".
-     * - The path can be concatenated without delimiters. But there are two
-     *   cases where the path has to be adjusted to make the URI reference
-     *   valid as PHP does not allow to throw an exception in __toString():
-     *     - If the path is rootless and an authority is present, the path MUST
-     *       be prefixed by "/".
-     *     - If the path is starting with more than one "/" and no authority is
-     *       present, the starting slashes MUST be reduced to one.
-     * - If a query is present, it MUST be prefixed by "?".
-     * - If a fragment is present, it MUST be prefixed by "#".
-     *
-     * @see http://tools.ietf.org/html/rfc3986#section-4.1
-     * @return string
-     */
-    public function __toString()
-    {
-        return '';
     }
 
     /**
@@ -668,6 +697,51 @@ class Uri implements UriInterface
     }
 
     /**
+     * Filter a query string to ensure it is propertly encoded.
+     *
+     * Ensures that the values in the query string are properly urlencoded.
+     *
+     * @param string $query
+     * @return string
+     */
+    private function filterQuery($query)
+    {
+        if (!empty($query) && strpos($query, '?') === 0) {
+            $query = substr($query, 1);
+        }
+        $parts = explode('&', $query);
+        foreach ($parts as $index => $part) {
+            list($key, $value) = $this->splitQueryValue($part);
+            if ($value === null) {
+                $parts[$index] = $this->filterQueryOrFragment($key);
+                continue;
+            }
+            $parts[$index] = sprintf(
+                '%s=%s',
+                $this->filterQueryOrFragment($key),
+                $this->filterQueryOrFragment($value)
+            );
+        }
+        return implode('&', $parts);
+    }
+
+    /**
+     * Filter a query string key or value, or a fragment.
+     *
+     * @param string $value
+     * @return string
+     */
+    private function filterQueryOrFragment($value)
+    {
+        return preg_replace_callback(
+            '/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/u',
+            [$this, 'urlEncodeChar'],
+            $value
+        );
+    }
+
+
+    /**
      * Performs an internal test
      * to ensure wether or not a given port
      * is standard.
@@ -723,17 +797,6 @@ class Uri implements UriInterface
     }
 
     /**
-     * URL encode a character returned by a regex.
-     *
-     * @param array $matches
-     * @return string
-     */
-    private function urlEncodeChar(array $matches)
-    {
-        return rawurlencode($matches[0]);
-    }
-
-    /**
      * Break up a Uri string into
      * it's separate components and
      * set our Uri properties.
@@ -756,10 +819,38 @@ class Uri implements UriInterface
         $this->host = (isset($parts['host'])) ? strtolower($parts['host']) : '';
         $this->port = (isset($parts['port'])) ? (int)$parts['port'] : null;
         $this->path = (isset($parts['path'])) ? $this->filterPath($parts['path']) : '';
+        $this->query = (isset($parts['query'])) ? $this->filterQuery($parts['query']) : '';
 
         // Check to see if the password was included too
         if (isset($parts['pass'])) {
             $this->userInfo .= ':' . $parts['pass'];
         }
+    }
+
+    /**
+     * URL encode a character returned by a regex.
+     *
+     * @param array $matches
+     * @return string
+     */
+    private function urlEncodeChar(array $matches)
+    {
+        return rawurlencode($matches[0]);
+    }
+
+
+    /**
+     * Split a query value into a key/value tuple.
+     *
+     * @param string $value
+     * @return array A value with exactly two elements, key and value
+     */
+    private function splitQueryValue($value)
+    {
+        $data = explode('=', $value, 2);
+        if (1 === count($data)) {
+            $data[] = null;
+        }
+        return $data;
     }
 }
