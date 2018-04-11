@@ -206,8 +206,8 @@ class UriTest extends TestCase
      *
      * @param $scheme
      * @param $expected
-     * @covers        BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::withScheme
-     * @covers        BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::getScheme
+     * @covers        BlcksheepIO\Http\Message\Uri::withScheme
+     * @covers        BlcksheepIO\Http\Message\Uri::getScheme
      * @dataProvider  validSchemeDataProvider
      */
     public function testWithSchemeConvertsSchemeToLowerCase($scheme, $expected)
@@ -223,8 +223,8 @@ class UriTest extends TestCase
      *
      * @param $scheme
      * @param $expected
-     * @covers        BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::withScheme
-     * @covers        BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::getScheme
+     * @covers        BlcksheepIO\Http\Message\Uri::withScheme
+     * @covers        BlcksheepIO\Http\Message\Uri::getScheme
      * @dataProvider  validSchemeDataProvider
      */
     public function testWithSchemeSupportsHttpAndHttpsAndDoesNotRaiseException($scheme, $expected)
@@ -238,8 +238,8 @@ class UriTest extends TestCase
      * Tests that the "://" postfix is correctly removed
      * from the scheme.
      *
-     * @covers BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::withScheme
-     * @covers BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::getScheme
+     * @covers BlcksheepIO\Http\Message\Uri::withScheme
+     * @covers BlcksheepIO\Http\Message\Uri::getScheme
      */
     public function testWithSchemeRemovesExtraCharacters()
     {
@@ -280,7 +280,7 @@ class UriTest extends TestCase
      * instances will only accept http(s). For all other schemes an
      * exception will be thrown.
      *
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withScheme
+     * @covers                   BlcksheepIO\Http\Message\Uri::withScheme
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Unsupported scheme requested
      */
@@ -313,7 +313,7 @@ class UriTest extends TestCase
      * an invalid PHP data-type is used as the scheme.
      *
      * @param $scheme
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withScheme
+     * @covers                   BlcksheepIO\Http\Message\Uri::withScheme
      * @dataProvider             invalidPHPDataTypesDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BlcksheepIO\Http\Message\Uri::withScheme expects a string argument;
@@ -354,7 +354,7 @@ class UriTest extends TestCase
      *
      * @param $user
      * @param $password
-     * @covers       BlcksheepIO\Http\Message\Uri::      withUserInfo
+     * @covers       BlcksheepIO\Http\Message\Uri::withUserInfo
      * @dataProvider validUserDataProvider
      */
     public function testWithUserInfoReturnsNewInstanceWhenNewUserInfo($user, $password)
@@ -396,7 +396,7 @@ class UriTest extends TestCase
      * the withUser method will throw an exception.
      *
      * @param $user
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withUserInfo
+     * @covers                   BlcksheepIO\Http\Message\Uri::withUserInfo
      * @dataProvider             invalidPHPDataTypesDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BlcksheepIO\Http\Message\Uri::withUserInfo expects a string argument;
@@ -412,7 +412,7 @@ class UriTest extends TestCase
      * portion will throw an exception.
      *
      * @param $user
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withUserInfo
+     * @covers                   BlcksheepIO\Http\Message\Uri::withUserInfo
      * @dataProvider             invalidPHPDataTypesDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BlcksheepIO\Http\Message\Uri::withUserInfo expects a string argument;
@@ -447,7 +447,7 @@ class UriTest extends TestCase
      * @param $user
      * @param $password
      * @param $expected
-     * @covers       BlcksheepIO\Http\Message\Uri::      withUserInfo
+     * @covers       BlcksheepIO\Http\Message\Uri::withUserInfo
      * @dataProvider userInfoProviderDataProvider
      */
     public function testWithUserCorrectlyEncodesUserNameAndPassword($user, $password, $expected)
@@ -697,7 +697,7 @@ class UriTest extends TestCase
      * passed as the port.
      *
      * @param $port
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withPort
+     * @covers                   BlcksheepIO\Http\Message\Uri::withPort
      * @dataProvider             invalidPortDataTypesDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid port
@@ -819,7 +819,7 @@ class UriTest extends TestCase
      * assignment of the path.
      *
      * @param $path
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withPath
+     * @covers                   BlcksheepIO\Http\Message\Uri::withPath
      * @dataProvider             invalidPathDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid path provided; must be a string
@@ -834,7 +834,7 @@ class UriTest extends TestCase
      * Test to ensure that the query string is not considered
      * part of the path and will thrown an exception if passed.
      *
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withPath
+     * @covers                   BlcksheepIO\Http\Message\Uri::withPath
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid path provided; must not contain a query string
      */
@@ -848,7 +848,7 @@ class UriTest extends TestCase
      * Ensures that an exception is thrown if the fragement is
      * passed with the path argument.
      *
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withPath
+     * @covers                   BlcksheepIO\Http\Message\Uri::withPath
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid path provided; must not contain a URI fragment
      */
@@ -945,7 +945,7 @@ class UriTest extends TestCase
      * attempting to pass in an invalid query.
      *
      * @param $query
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withQuery
+     * @covers                   BlcksheepIO\Http\Message\Uri::withQuery
      * @dataProvider invalidQueryStringsDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BlcksheepIO\Http\Message\Uri::withQuery expects a string argument;
@@ -960,7 +960,7 @@ class UriTest extends TestCase
      * Ensures an exception is thrown if attempting
      * to passing in a uri framgement.
      *
-     * @covers                   BlcksheepIO\Http\Message\Uri::                  withQuery
+     * @covers                   BlcksheepIO\Http\Message\Uri::withQuery
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Query string must not include a URI fragment
      */
