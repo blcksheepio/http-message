@@ -11,7 +11,6 @@ use stdClass;
  * Class UriTest
  * @package                       Tests\Http\Message
  * @author                        Jason Lamb <baaa@iamalamb.com>
- * @coversDefaultClass            BlcksheepIO\Http\Message\Uri
  */
 class UriTest extends TestCase
 {
@@ -26,8 +25,8 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the scheme.
      *
-     * @covers _construct
-     * @covers getScheme
+     * @covers BlcksheepIO\Http\Message\Uri::_construct
+     * @covers BlcksheepIO\Http\Message\Uri::getScheme
      */
     public function testConstructorCorrectlySetsScheme()
     {
@@ -39,8 +38,8 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the user info.
      *
-     * @covers _construct
-     * @covers getUserInfo
+     * @covers BlcksheepIO\Http\Message\Uri::_construct
+     * @covers BlcksheepIO\Http\Message\Uri::getUserInfo
      */
     public function testConstructorCorrectlySetsUserInfo()
     {
@@ -52,8 +51,8 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the host.
      *
-     * @covers _construct
-     * @covers getHost
+     * @covers BlcksheepIO\Http\Message\Uri::_construct
+     * @covers BlcksheepIO\Http\Message\Uri::getHost
      */
     public function testConstructorCorrectlySetsHost()
     {
@@ -65,8 +64,8 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the port.
      *
-     * @covers _construct
-     * @covers getPort
+     * @covers BlcksheepIO\Http\Message\Uri::_construct
+     * @covers BlcksheepIO\Http\Message\Uri::getPort
      */
     public function testConstructorCorrectlySetsPort()
     {
@@ -78,8 +77,8 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the path.
      *
-     * @covers _construct
-     * @covers getPath
+     * @covers BlcksheepIO\Http\Message\Uri::_construct
+     * @covers BlcksheepIO\Http\Message\Uri::getPath
      */
     public function testConstructorCorrectlySetsPath()
     {
@@ -91,8 +90,8 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the query.
      *
-     * @covers _construct
-     * @covers getQuery
+     * @covers BlcksheepIO\Http\Message\Uri::_construct
+     * @covers BlcksheepIO\Http\Message\Uri::getQuery
      */
     public function testConstructorCorrectlySetsQuery()
     {
@@ -112,7 +111,7 @@ class UriTest extends TestCase
      * is a new clone with the modified scheme.
      *
      * @return \Psr\Http\Message\UriInterface $uri
-     * @covers withScheme
+     * @covers BlcksheepIO\Http\Message\Uri::withScheme
      */
     public function testWithSchemeReturnsNewUriInstanceWhenNewSchemeIsProvided()
     {
@@ -136,7 +135,7 @@ class UriTest extends TestCase
      * the getScheme function correctly returns the scheme for the
      * new cloned instance.
      *
-     * @covers  getScheme
+     * @covers  BlcksheepIO\Http\Message\Uri:: getScheme
      * @depends testWithSchemeReturnsNewUriInstanceWhenNewSchemeIsProvided
      */
     public function testGetSchemeReturnsCorrectSchemeForClonedInstance($new)
@@ -150,7 +149,7 @@ class UriTest extends TestCase
      * is the original instance.
      *
      * @return \Psr\Http\Message\UriInterface $uri
-     * @covers withScheme
+     * @covers BlcksheepIO\Http\Message\Uri::withScheme
      */
     public function testWithSchemeReturnsSameInstanceIfWhenSchemeIsIdentical()
     {
@@ -166,7 +165,7 @@ class UriTest extends TestCase
      * getScheme will return the same scheme.
      *
      * @param $new
-     * @covers  getScheme
+     * @covers  BlcksheepIO\Http\Message\Uri:: getScheme
      * @depends testWithSchemeReturnsSameInstanceIfWhenSchemeIsIdentical
      */
     public function testWithSchemeReturnsCorrectSchemeIfIdenticalSchemeIsUsed($new)
@@ -178,8 +177,8 @@ class UriTest extends TestCase
      * Ensures that withScheme can accept an empty string and returns an empty string.
      *
      * @return \Psr\Http\Message\UriInterface $uri
-     * @covers withScheme
-     * @covers getScheme
+     * @covers BlcksheepIO\Http\Message\Uri::withScheme
+     * @covers BlcksheepIO\Http\Message\Uri::getScheme
      */
     public function testWithSchemeAcceptsEmptyStringAndReturnsAnEmptyString()
     {
@@ -213,8 +212,8 @@ class UriTest extends TestCase
      *
      * @param $scheme
      * @param $expected
-     * @covers        BlcksheepIO\Http\Message\Uri::withScheme
-     * @covers        BlcksheepIO\Http\Message\Uri::getScheme
+     * @covers        BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::withScheme
+     * @covers        BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::getScheme
      * @dataProvider  validSchemeDataProvider
      */
     public function testWithSchemeConvertsSchemeToLowerCase($scheme, $expected)
@@ -230,8 +229,8 @@ class UriTest extends TestCase
      *
      * @param $scheme
      * @param $expected
-     * @covers        BlcksheepIO\Http\Message\Uri::withScheme
-     * @covers        BlcksheepIO\Http\Message\Uri::getScheme
+     * @covers        BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::withScheme
+     * @covers        BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::getScheme
      * @dataProvider  validSchemeDataProvider
      */
     public function testWithSchemeSupportsHttpAndHttpsAndDoesNotRaiseException($scheme, $expected)
@@ -245,8 +244,8 @@ class UriTest extends TestCase
      * Tests that the "://" postfix is correctly removed
      * from the scheme.
      *
-     * @covers        BlcksheepIO\Http\Message\Uri::withScheme
-     * @covers        BlcksheepIO\Http\Message\Uri::getScheme
+     * @covers BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::withScheme
+     * @covers BlcksheepIO\Http\Message\Uri::       BlcksheepIO\Http\Message\Uri::getScheme
      */
     public function testWithSchemeRemovesExtraCharacters()
     {
@@ -259,7 +258,7 @@ class UriTest extends TestCase
      * Test to ensure that an empty string is returned if it
      * is not set.
      *
-     * @covers getScheme
+     * @covers BlcksheepIO\Http\Message\Uri::getScheme
      * @return $uri;
      */
     public function testGetSchemeReturnsAnEmptyStringIfSchemeIsNotPresent()
@@ -274,7 +273,7 @@ class UriTest extends TestCase
      * Ensure that getScheme returns an instance of string.
      *
      * @param $new
-     * @covers  getScheme
+     * @covers  BlcksheepIO\Http\Message\Uri:: getScheme
      * @depends testGetSchemeReturnsAnEmptyStringIfSchemeIsNotPresent
      */
     public function testThatGetSchemeReturnsAString($new)
@@ -287,7 +286,7 @@ class UriTest extends TestCase
      * instances will only accept http(s). For all other schemes an
      * exception will be thrown.
      *
-     * @covers                   withScheme
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withScheme
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Unsupported scheme requested
      */
@@ -320,7 +319,7 @@ class UriTest extends TestCase
      * an invalid PHP data-type is used as the scheme.
      *
      * @param $scheme
-     * @covers                   withScheme
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withScheme
      * @dataProvider             invalidPHPDataTypesDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BlcksheepIO\Http\Message\Uri::withScheme expects a string argument;
@@ -361,7 +360,7 @@ class UriTest extends TestCase
      *
      * @param $user
      * @param $password
-     * @covers       withUserInfo
+     * @covers       BlcksheepIO\Http\Message\Uri::      withUserInfo
      * @dataProvider validUserDataProvider
      */
     public function testWithUserInfoReturnsNewInstanceWhenNewUserInfo($user, $password)
@@ -375,7 +374,7 @@ class UriTest extends TestCase
      * Immutability test to ensure that if the user info is identical, the
      * same user instance is returned and not cloned.
      *
-     * @covers withUserInfo
+     * @covers BlcksheepIO\Http\Message\Uri::withUserInfo
      */
     public function testWithUserInfoReturnsSameInstanceWhenUserAndPasswordAreIdentical()
     {
@@ -403,7 +402,7 @@ class UriTest extends TestCase
      * the withUser method will throw an exception.
      *
      * @param $user
-     * @covers                   withUserInfo
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withUserInfo
      * @dataProvider             invalidPHPDataTypesDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BlcksheepIO\Http\Message\Uri::withUserInfo expects a string argument;
@@ -419,7 +418,7 @@ class UriTest extends TestCase
      * portion will throw an exception.
      *
      * @param $user
-     * @covers                   withUserInfo
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withUserInfo
      * @dataProvider             invalidPHPDataTypesDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BlcksheepIO\Http\Message\Uri::withUserInfo expects a string argument;
@@ -454,7 +453,7 @@ class UriTest extends TestCase
      * @param $user
      * @param $password
      * @param $expected
-     * @covers       withUserInfo
+     * @covers       BlcksheepIO\Http\Message\Uri::      withUserInfo
      * @dataProvider userInfoProviderDataProvider
      */
     public function testWithUserCorrectlyEncodesUserNameAndPassword($user, $password, $expected)
@@ -475,7 +474,7 @@ class UriTest extends TestCase
      * is returned if different data is provided.
      *
      * @return \Psr\Http\Message\UriInterface $new
-     * @covers withHost
+     * @covers BlcksheepIO\Http\Message\Uri::withHost
      */
     public function testWithHostReturnsNewInstanceWhenNewHostIsProvided()
     {
@@ -492,7 +491,7 @@ class UriTest extends TestCase
      * host information.
      *
      * @param $new
-     * @covers  getHost
+     * @covers  BlcksheepIO\Http\Message\Uri:: getHost
      * @depends testWithHostReturnsNewInstanceWhenNewHostIsProvided
      */
     public function testGetHostCorrectlyReturnsNewHostInfoIfNewInstanceWasReturned($new)
@@ -505,7 +504,7 @@ class UriTest extends TestCase
      * identical host, the same instance is returned.
      *
      * @return \Psr\Http\Message\UriInterface $new
-     * @covers withHost
+     * @covers BlcksheepIO\Http\Message\Uri::withHost
      */
     public function testWithHostReturnsSameInstanceWhenHostIsIdentical()
     {
@@ -521,7 +520,7 @@ class UriTest extends TestCase
      * when assigning identical host information.
      *
      * @param $new
-     * @covers  getHost
+     * @covers  BlcksheepIO\Http\Message\Uri:: getHost
      * @depends testWithHostReturnsSameInstanceWhenHostIsIdentical
      */
     public function testGetHostReturnIdenticalHostInformationWhenIdenticalHostInformationIsPassed($new)
@@ -534,7 +533,7 @@ class UriTest extends TestCase
      * empty string as a parameter.
      *
      * @return $new;
-     * @covers withHost
+     * @covers BlcksheepIO\Http\Message\Uri::withHost
      */
     public function testWithHostAcceptsEmptyString()
     {
@@ -551,7 +550,7 @@ class UriTest extends TestCase
      * and the host is returned as an empty string.
      *
      * @param $new
-     * @covers  getHost
+     * @covers  BlcksheepIO\Http\Message\Uri:: getHost
      * @depends testWithHostAcceptsEmptyString
      */
     public function testGetHostReturnsAnEmptyStringIfOneIsPassed($new)
@@ -563,8 +562,8 @@ class UriTest extends TestCase
      * Tests that the host portion is correctly normalized to lowercase
      * as specified in the original requirements.
      *
-     * @covers withHost
-     * @covers getHost
+     * @covers BlcksheepIO\Http\Message\Uri::withHost
+     * @covers BlcksheepIO\Http\Message\Uri::getHost
      */
     public function testWithHostConvertsHostToLowerCase()
     {
@@ -598,7 +597,7 @@ class UriTest extends TestCase
      * is specificed, a cloned instance is returned
      *
      * @return $new
-     * @covers withPort
+     * @covers BlcksheepIO\Http\Message\Uri::withPort
      */
     public function testWithPortReturnsNewInstanceWhenNewPortIsProvided()
     {
@@ -614,7 +613,7 @@ class UriTest extends TestCase
      * correctly assigned to the new instance.
      *
      * @param $new
-     * @covers  getPort
+     * @covers  BlcksheepIO\Http\Message\Uri:: getPort
      * @depends testWithPortReturnsNewInstanceWhenNewPortIsProvided
      */
     public function testWithPortCorrectlyAssignsThePortToTheClonedInstance($new)
@@ -627,7 +626,7 @@ class UriTest extends TestCase
      * is provided, no cloning occurs.
      *
      * @return $new
-     * @covers withPort
+     * @covers BlcksheepIO\Http\Message\Uri::withPort
      */
     public function testWithPortReturnsSameInstanceIfWhenPortIsIdentical()
     {
@@ -643,7 +642,7 @@ class UriTest extends TestCase
      * no cloning occurs, then the same port is returned.
      *
      * @param $new
-     * @covers  getPort
+     * @covers  BlcksheepIO\Http\Message\Uri:: getPort
      * @depends testWithPortReturnsSameInstanceIfWhenPortIsIdentical
      */
     public function testWithPortReturnsIdenticalPortIfSamePortIsPassed($new)
@@ -704,7 +703,7 @@ class UriTest extends TestCase
      * passed as the port.
      *
      * @param $port
-     * @covers                   withPort
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withPort
      * @dataProvider             invalidPortDataTypesDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid port
@@ -719,7 +718,7 @@ class UriTest extends TestCase
      * Test to ensure that an integer is returned
      * if the port is valid.
      *
-     * @covers getPort
+     * @covers BlcksheepIO\Http\Message\Uri::getPort
      */
     public function testWithPortReturnsAnIntegerIfPortIsValid()
     {
@@ -730,7 +729,7 @@ class UriTest extends TestCase
     /**
      * Ensures that if a port is not specified NULL is returned
      *
-     * @covers getPort
+     * @covers BlcksheepIO\Http\Message\Uri::getPort
      */
     public function testWithPortReturnsNullIfPortIsNotPresent()
     {
@@ -749,7 +748,7 @@ class UriTest extends TestCase
      * new path is provided, the instance is cloned and returned.
      *
      * @return $new
-     * @covers withPath
+     * @covers BlcksheepIO\Http\Message\Uri::withPath
      */
     public function testWithPathReturnsNewInstanceWhenNewPathIsProvided()
     {
@@ -765,7 +764,7 @@ class UriTest extends TestCase
      * correctly keeps the new path info.
      *
      * @param $new
-     * @covers  getPath
+     * @covers  BlcksheepIO\Http\Message\Uri:: getPath
      * @depends testWithPathReturnsNewInstanceWhenNewPathIsProvided
      */
     public function testToEnsureClonedInstanceReturnsNewPath($new)
@@ -778,7 +777,7 @@ class UriTest extends TestCase
      * the same instance is returned and no clone is present.
      *
      * @return $new
-     * @covers withPath
+     * @covers BlcksheepIO\Http\Message\Uri::withPath
      */
     public function testWithPathReturnsSameInstanceIfPathIsIdentical()
     {
@@ -794,7 +793,7 @@ class UriTest extends TestCase
      * attempting to assign an identical path.
      *
      * @param $new
-     * @covers  getPath
+     * @covers  BlcksheepIO\Http\Message\Uri:: getPath
      * @depends testWithPathReturnsSameInstanceIfPathIsIdentical
      */
     public function testWithPathReturnsCorrectPathIfPathIsIdentical($new)
@@ -826,7 +825,7 @@ class UriTest extends TestCase
      * assignment of the path.
      *
      * @param $path
-     * @covers                   withPath
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withPath
      * @dataProvider             invalidPathDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid path provided; must be a string
@@ -841,7 +840,7 @@ class UriTest extends TestCase
      * Test to ensure that the query string is not considered
      * part of the path and will thrown an exception if passed.
      *
-     * @covers                   withPath
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withPath
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid path provided; must not contain a query string
      */
@@ -855,7 +854,7 @@ class UriTest extends TestCase
      * Ensures that an exception is thrown if the fragement is
      * passed with the path argument.
      *
-     * @covers                   withPath
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withPath
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid path provided; must not contain a URI fragment
      */
@@ -877,7 +876,7 @@ class UriTest extends TestCase
      * a new query.
      *
      * @return $new
-     * @covers withQuery
+     * @covers BlcksheepIO\Http\Message\Uri::withQuery
      */
     public function testWithQueryReturnsNewInstanceWhenNewQuery()
     {
@@ -892,7 +891,7 @@ class UriTest extends TestCase
      * Tests that if cloned, the new query data is returned.
      *
      * @param $new
-     * @covers  getQuery
+     * @covers  BlcksheepIO\Http\Message\Uri:: getQuery
      * @depends testWithQueryReturnsNewInstanceWhenNewQuery
      */
     public function testGetQueryReturnsNewQueryIfUriIsCloned($new)
@@ -905,7 +904,7 @@ class UriTest extends TestCase
      * the same instance is returned and no cloning takes place.
      *
      * @return $new
-     * @covers withQuery
+     * @covers BlcksheepIO\Http\Message\Uri::withQuery
      */
     public function testWithQueryReturnsSameInstanceIfQueryIsIdentical()
     {
@@ -922,7 +921,7 @@ class UriTest extends TestCase
      * is not modified.
      *
      * @param $new
-     * @covers  getQuery
+     * @covers  BlcksheepIO\Http\Message\Uri:: getQuery
      * @depends testWithQueryReturnsSameInstanceIfQueryIsIdentical
      */
     public function testGetQueryReturnsSameQueryIfQueryIsIdentical($new)
@@ -952,7 +951,7 @@ class UriTest extends TestCase
      * attempting to pass in an invalid query.
      *
      * @param $query
-     * @covers                   withQuery
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withQuery
      * @dataProvider invalidQueryStringsDataProvider
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage BlcksheepIO\Http\Message\Uri::withQuery expects a string argument;
@@ -967,7 +966,7 @@ class UriTest extends TestCase
      * Ensures an exception is thrown if attempting
      * to passing in a uri framgement.
      *
-     * @covers                   withQuery
+     * @covers                   BlcksheepIO\Http\Message\Uri::                  withQuery
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Query string must not include a URI fragment
      */
