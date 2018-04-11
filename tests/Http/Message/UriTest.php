@@ -26,6 +26,7 @@ class UriTest extends TestCase
      * sets the scheme.
      *
      * @covers BlcksheepIO\Http\Message\Uri::getScheme
+     * @covers BlcksheepIO\Http\Message\Uri::<parseUrl>
      */
     public function testConstructorCorrectlySetsScheme()
     {
