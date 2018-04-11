@@ -574,7 +574,6 @@ class UriTest extends TestCase
      * is provided, no cloning occurs.
      *
      * @return $new
-     * @covers BlcksheepIO\Http\Message\Uri::withPort
      */
     public function testWithPortReturnsSameInstanceIfWhenPortIsIdentical()
     {
