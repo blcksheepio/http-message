@@ -25,7 +25,6 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the scheme.
      *
-     * @covers BlcksheepIO\Http\Message\Uri::_construct
      * @covers BlcksheepIO\Http\Message\Uri::getScheme
      */
     public function testConstructorCorrectlySetsScheme()
@@ -38,7 +37,6 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the user info.
      *
-     * @covers BlcksheepIO\Http\Message\Uri::_construct
      * @covers BlcksheepIO\Http\Message\Uri::getUserInfo
      */
     public function testConstructorCorrectlySetsUserInfo()
@@ -51,7 +49,6 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the host.
      *
-     * @covers BlcksheepIO\Http\Message\Uri::_construct
      * @covers BlcksheepIO\Http\Message\Uri::getHost
      */
     public function testConstructorCorrectlySetsHost()
@@ -64,7 +61,6 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the port.
      *
-     * @covers BlcksheepIO\Http\Message\Uri::_construct
      * @covers BlcksheepIO\Http\Message\Uri::getPort
      */
     public function testConstructorCorrectlySetsPort()
@@ -77,7 +73,6 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the path.
      *
-     * @covers BlcksheepIO\Http\Message\Uri::_construct
      * @covers BlcksheepIO\Http\Message\Uri::getPath
      */
     public function testConstructorCorrectlySetsPath()
@@ -90,7 +85,6 @@ class UriTest extends TestCase
      * Test to ensure that the contructor function correctly
      * sets the query.
      *
-     * @covers BlcksheepIO\Http\Message\Uri::_construct
      * @covers BlcksheepIO\Http\Message\Uri::getQuery
      */
     public function testConstructorCorrectlySetsQuery()
