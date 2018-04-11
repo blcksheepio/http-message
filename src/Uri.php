@@ -86,6 +86,13 @@ class Uri implements UriInterface
     protected $query = '';
 
     /**
+     * Represents the fragment
+     *
+     * @var string
+     */
+    protected $fragment = '';
+
+    /**
      * The RFC compliant
      * scheme used;
      *
@@ -333,7 +340,7 @@ class Uri implements UriInterface
      */
     public function getFragment()
     {
-        // TODO: Implement getFragment() method.
+        return $this->fragment;
     }
 
     /**
@@ -382,7 +389,7 @@ class Uri implements UriInterface
      * user; an empty string for the user is equivalent to removing user
      * information.
      *
-     * @param string $user The user name to use for authority.
+     * @param string $user          The user name to use for authority.
      * @param null|string $password The password associated with $user.
      * @return static A new instance with the specified user information.
      */
@@ -462,7 +469,7 @@ class Uri implements UriInterface
      * information.
      *
      * @param null|int $port The port to use with the new instance; a null value
-     *     removes the port information.
+     *                       removes the port information.
      * @return static A new instance with the specified port.
      * @throws InvalidArgumentException for invalid ports.
      */
@@ -609,7 +616,21 @@ class Uri implements UriInterface
      */
     public function withFragment($fragment)
     {
-        // TODO: Implement withFragment() method.
+        if (!is_string($fragment)) {
+            throw new InvalidArgumentException(sprintf(
+                '%s expects a string argument; received %s',
+                __METHOD__,
+                (is_object($fragment) ? get_class($fragment) : gettype($fragment))
+            ));
+        }
+        $fragment = $this->filterFragment($fragment);
+        if ($fragment === $this->fragment) {
+            // Do nothing if no change was made.
+            return $this;
+        }
+        $new = clone $this;
+        $new->fragment = $fragment;
+        return $new;
     }
 
     /**
@@ -726,6 +747,20 @@ class Uri implements UriInterface
     }
 
     /**
+     * Filter a fragment value to ensure it is properly encoded.
+     *
+     * @param string $fragment
+     * @return string
+     */
+    private function filterFragment($fragment)
+    {
+        if (!empty($fragment) && strpos($fragment, '#') === 0) {
+            $fragment = '%23' . substr($fragment, 1);
+        }
+        return $this->filterQueryOrFragment($fragment);
+    }
+
+    /**
      * Filter a query string key or value, or a fragment.
      *
      * @param string $value
@@ -820,6 +855,7 @@ class Uri implements UriInterface
         $this->port = (isset($parts['port'])) ? (int)$parts['port'] : null;
         $this->path = (isset($parts['path'])) ? $this->filterPath($parts['path']) : '';
         $this->query = (isset($parts['query'])) ? $this->filterQuery($parts['query']) : '';
+        $this->fragment = isset($parts['fragment']) ? $this->filterFragment($parts['fragment']) : '';
 
         // Check to see if the password was included too
         if (isset($parts['pass'])) {
