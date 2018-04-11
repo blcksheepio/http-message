@@ -129,7 +129,7 @@ class UriTest extends TestCase
      * the getScheme function correctly returns the scheme for the
      * new cloned instance.
      *
-     * @covers  BlcksheepIO\Http\Message\Uri:: getScheme
+     * @covers  BlcksheepIO\Http\Message\Uri::getScheme
      * @depends testWithSchemeReturnsNewUriInstanceWhenNewSchemeIsProvided
      */
     public function testGetSchemeReturnsCorrectSchemeForClonedInstance($new)
@@ -159,7 +159,7 @@ class UriTest extends TestCase
      * getScheme will return the same scheme.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getScheme
+     * @covers  BlcksheepIO\Http\Message\Uri::getScheme
      * @depends testWithSchemeReturnsSameInstanceIfWhenSchemeIsIdentical
      */
     public function testWithSchemeReturnsCorrectSchemeIfIdenticalSchemeIsUsed($new)
@@ -267,7 +267,7 @@ class UriTest extends TestCase
      * Ensure that getScheme returns an instance of string.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getScheme
+     * @covers  BlcksheepIO\Http\Message\Uri::getScheme
      * @depends testGetSchemeReturnsAnEmptyStringIfSchemeIsNotPresent
      */
     public function testThatGetSchemeReturnsAString($new)
@@ -485,7 +485,7 @@ class UriTest extends TestCase
      * host information.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getHost
+     * @covers  BlcksheepIO\Http\Message\Uri::getHost
      * @depends testWithHostReturnsNewInstanceWhenNewHostIsProvided
      */
     public function testGetHostCorrectlyReturnsNewHostInfoIfNewInstanceWasReturned($new)
@@ -514,7 +514,7 @@ class UriTest extends TestCase
      * when assigning identical host information.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getHost
+     * @covers  BlcksheepIO\Http\Message\Uri::getHost
      * @depends testWithHostReturnsSameInstanceWhenHostIsIdentical
      */
     public function testGetHostReturnIdenticalHostInformationWhenIdenticalHostInformationIsPassed($new)
@@ -544,7 +544,7 @@ class UriTest extends TestCase
      * and the host is returned as an empty string.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getHost
+     * @covers  BlcksheepIO\Http\Message\Uri::getHost
      * @depends testWithHostAcceptsEmptyString
      */
     public function testGetHostReturnsAnEmptyStringIfOneIsPassed($new)
@@ -607,7 +607,7 @@ class UriTest extends TestCase
      * correctly assigned to the new instance.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getPort
+     * @covers  BlcksheepIO\Http\Message\Uri::getPort
      * @depends testWithPortReturnsNewInstanceWhenNewPortIsProvided
      */
     public function testWithPortCorrectlyAssignsThePortToTheClonedInstance($new)
@@ -636,7 +636,7 @@ class UriTest extends TestCase
      * no cloning occurs, then the same port is returned.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getPort
+     * @covers  BlcksheepIO\Http\Message\Uri::getPort
      * @depends testWithPortReturnsSameInstanceIfWhenPortIsIdentical
      */
     public function testWithPortReturnsIdenticalPortIfSamePortIsPassed($new)
@@ -758,7 +758,7 @@ class UriTest extends TestCase
      * correctly keeps the new path info.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getPath
+     * @covers  BlcksheepIO\Http\Message\Uri::getPath
      * @depends testWithPathReturnsNewInstanceWhenNewPathIsProvided
      */
     public function testToEnsureClonedInstanceReturnsNewPath($new)
@@ -787,7 +787,7 @@ class UriTest extends TestCase
      * attempting to assign an identical path.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getPath
+     * @covers  BlcksheepIO\Http\Message\Uri::getPath
      * @depends testWithPathReturnsSameInstanceIfPathIsIdentical
      */
     public function testWithPathReturnsCorrectPathIfPathIsIdentical($new)
@@ -885,7 +885,7 @@ class UriTest extends TestCase
      * Tests that if cloned, the new query data is returned.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getQuery
+     * @covers  BlcksheepIO\Http\Message\Uri::getQuery
      * @depends testWithQueryReturnsNewInstanceWhenNewQuery
      */
     public function testGetQueryReturnsNewQueryIfUriIsCloned($new)
@@ -915,7 +915,7 @@ class UriTest extends TestCase
      * is not modified.
      *
      * @param $new
-     * @covers  BlcksheepIO\Http\Message\Uri:: getQuery
+     * @covers  BlcksheepIO\Http\Message\Uri::getQuery
      * @depends testWithQueryReturnsSameInstanceIfQueryIsIdentical
      */
     public function testGetQueryReturnsSameQueryIfQueryIsIdentical($new)
