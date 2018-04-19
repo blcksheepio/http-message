@@ -98,19 +98,24 @@ class UriTest extends TestCase
      */
     public function testWithSchemeReturnsNewUriInstanceWhenNewSchemeIsProvided()
     {
-        $uri = new Uri();
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
         $new = $uri->withScheme('http');
         self::assertNotSame($uri, $new);
 
         return $new;
 
-        /*
-         * This SHOULD be enabled once I have the FULL code
-         * developed.
-         *
-         * TODO: Enable this and move to NEW test
-         */
-        self::assertEquals('http://user:pass@local.example.com:3001/foo?bar=baz#quz', (string)$new);
+    }
+
+    /**
+     * Test to ensure that when an instance of uri is cloned,
+     * the getScheme function correctly returns the scheme for the
+     * new cloned instance.
+     *
+     * @depends testWithSchemeReturnsNewUriInstanceWhenNewSchemeIsProvided
+     */
+    public function testGetSchemeReturnsCorrectSchemeFromToString($new)
+    {
+        self::assertEquals('http://user:pass@local.example.com/foo?bar=baz#quz', (string)$new);
     }
 
     /**

@@ -109,6 +109,12 @@ class Uri implements UriInterface
     protected $userInfo = '';
 
     /**
+     * generated uri string cache
+     * @var string|null
+     */
+    protected $uriString;
+
+    /**
      * Uri constructor.
      *
      * @param string $uri
