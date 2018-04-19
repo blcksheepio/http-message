@@ -905,4 +905,54 @@ class UriTest extends TestCase
         $uri = new Uri();
         $uri->withQuery('?test=test#myfragment');
     }
+
+    /*
+    * FRAGMENT TESTS
+    *
+    * @TODO: - REMOVE ONCE TESTS ARE COMPLETED!
+    */
+
+    /**
+     * Test to ensure that if an identical fragment is passed, then
+     * the same instance is returned and no cloning takes place.
+     *
+     * @return $new
+     */
+    public function testWithFragmentReturnsSameInstanceIfFragmentIsIdentical()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#foo');
+        $new = $uri->withFragment('foo');
+        self::assertSame($uri, $new);
+
+        return $new;
+    }
+
+    /**
+     * Test to ensure that if an identical uri is returned
+     * from setting an identical query portion, the query
+     * is not modified.
+     *
+     * @param $new
+     * @depends testWithFragmentReturnsSameInstanceIfFragmentIsIdentical
+     */
+    public function testGetFragmentReturnsSameFragmentIfFragmentIsIdentical($new)
+    {
+        self::assertSame('foo', $new->getFragment());
+    }
+
+    /**
+     * Immutability test to ensure that the instance
+     * is correctly cloned if attempting to pass
+     * a new query.
+     *
+     * @return $new
+     */
+    public function testWithFragmentReturnsNewInstanceWhenNewFragment()
+    {
+        $uri = new Uri('https://user:pass@local.example.com:3001/foo?bar=baz#quz');
+        $new = $uri->withFragment('foo');
+        self::assertNotSame($uri, $new);
+
+        return $new;
+    }
 }

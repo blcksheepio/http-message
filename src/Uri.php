@@ -623,14 +623,17 @@ class Uri implements UriInterface
                 (is_object($fragment) ? get_class($fragment) : gettype($fragment))
             ));
         }
+
         $fragment = $this->filterFragment($fragment);
+
         if ($fragment === $this->fragment) {
-            // Do nothing if no change was made.
             return $this;
         }
-        $new = clone $this;
-        $new->fragment = $fragment;
-        return $new;
+
+        $clone = clone $this;
+        $clone->fragment = $fragment;
+
+        return $clone;
     }
 
     /**
@@ -639,7 +642,7 @@ class Uri implements UriInterface
      * @param string $path
      * @return string
      */
-    private function filterPath($path)
+    protected function filterPath($path)
     {
         $path = preg_replace_callback(
             '/(?:[^' . self::CHAR_UNRESERVED . ')(:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/u',
@@ -671,7 +674,7 @@ class Uri implements UriInterface
      * @param string $scheme
      * @return string|UriInterface
      */
-    private function filterScheme($scheme)
+    protected function filterScheme($scheme)
     {
         // First convert the $scheme to lower-case and strip out additional characters (://)
         $scheme = strtolower($scheme);
@@ -702,7 +705,7 @@ class Uri implements UriInterface
      * @param string $part
      * @return string
      */
-    private function filterUserInfo($part)
+    protected function filterUserInfo($part)
     {
         // Note the addition of `%` to initial charset; this allows `|` portion
         // to match and thus prevent double-encoding.
@@ -725,7 +728,7 @@ class Uri implements UriInterface
      * @param string $query
      * @return string
      */
-    private function filterQuery($query)
+    protected function filterQuery($query)
     {
         if (!empty($query) && strpos($query, '?') === 0) {
             $query = substr($query, 1);
@@ -752,10 +755,11 @@ class Uri implements UriInterface
      * @param string $fragment
      * @return string
      */
-    private function filterFragment($fragment)
+    protected function filterFragment($fragment)
     {
         if (!empty($fragment) && strpos($fragment, '#') === 0) {
             $fragment = '%23' . substr($fragment, 1);
+            var_dump($fragment);
         }
         return $this->filterQueryOrFragment($fragment);
     }
@@ -766,7 +770,7 @@ class Uri implements UriInterface
      * @param string $value
      * @return string
      */
-    private function filterQueryOrFragment($value)
+    protected function filterQueryOrFragment($value)
     {
         return preg_replace_callback(
             '/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/u',
@@ -786,7 +790,7 @@ class Uri implements UriInterface
      * @param $port
      * @return bool
      */
-    private function isNonStandardPort($scheme, $host, $port)
+    protected function isNonStandardPort($scheme, $host, $port)
     {
         // If the scheme is present, perform additional checks
         if (!$scheme) {
@@ -816,7 +820,7 @@ class Uri implements UriInterface
      * @param string $param
      * @throws InvalidArgumentException
      */
-    private function isValidString($method, $param)
+    protected function isValidString($method, $param)
     {
         // Check to see that the $param parameter is a valid string.
         // If it is not, throw an exception.
@@ -838,7 +842,7 @@ class Uri implements UriInterface
      *
      * @param $uri
      */
-    private function parseUri($uri)
+    protected function parseUri($uri)
     {
         // Use parse_uri to break up the $uri
         $parts = parse_url($uri);
@@ -869,7 +873,7 @@ class Uri implements UriInterface
      * @param array $matches
      * @return string
      */
-    private function urlEncodeChar(array $matches)
+    protected function urlEncodeChar(array $matches)
     {
         return rawurlencode($matches[0]);
     }
@@ -881,7 +885,7 @@ class Uri implements UriInterface
      * @param string $value
      * @return array A value with exactly two elements, key and value
      */
-    private function splitQueryValue($value)
+    protected function splitQueryValue($value)
     {
         $data = explode('=', $value, 2);
         if (1 === count($data)) {
