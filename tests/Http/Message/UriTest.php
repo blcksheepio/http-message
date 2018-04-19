@@ -110,7 +110,7 @@ class UriTest extends TestCase
          *
          * TODO: Enable this and move to NEW test
          */
-        //self::assertEquals('http://user:pass@local.example.com:3001/foo?bar=baz#quz', (string) $new);
+        self::assertEquals('http://user:pass@local.example.com:3001/foo?bar=baz#quz', (string)$new);
     }
 
     /**
